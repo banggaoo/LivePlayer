@@ -1,0 +1,16 @@
+PODS:
+  - LivePlayer (0.1.0)
+
+DEPENDENCIES:
+  - LivePlayer (from `../`)
+
+EXTERNAL SOURCES:
+  LivePlayer:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LivePlayer: 5a17ac394d26de2ded476bb9a0bd7547898bede1
+
+PODFILE CHECKSUM: 74c8fd740fad3e44d109a354315e91afe440397e
+
+COCOAPODS: 1.5.3
