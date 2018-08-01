@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LivePlayer'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Live/VOD Player based AVPlayer.'
 
 # This description is used to generate tags and improve search results.
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = 'Live/VOD Player based AVPlayer.'
+  s.description      = 'Live/VOD Player based on AVPlayer.'
 
   s.homepage         = 'https://github.com/banggaoo/LivePlayer'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
@@ -30,6 +30,8 @@ Pod::Spec.new do |s|
 
   s.source_files = 'LivePlayer/Classes/**/*'
   
+  s.swift_version = '4.1'
+
   # s.resource_bundles = {
   #   'LivePlayer' => ['LivePlayer/Assets/*.png']
   # }
