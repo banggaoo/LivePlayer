@@ -14,7 +14,7 @@ class ViewController: UIViewController, PlayerDelegate
 {
     private struct Constants
     {
-        static let VideoURL = URL(string: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8")!
+        static let VideoURL = URL(string: "https://wowzaprod179-i.akamaihd.net/hls/live/678082/1b11010a/playlist.m3u8")!
     }
     
     @IBOutlet weak var playButton: UIButton!
@@ -28,11 +28,20 @@ class ViewController: UIViewController, PlayerDelegate
     {
         super.viewDidLoad()
         
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient,
+                                                         mode: AVAudioSessionModeMoviePlayback,
+                                                         options: [.mixWithOthers])
         player.delegate = self
         
         self.addPlayerToView()
         
         self.player.set(AVURLAsset(url: Constants.VideoURL))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        player.play()
     }
     
     // MARK: Setup
@@ -70,6 +79,8 @@ class ViewController: UIViewController, PlayerDelegate
     
     func playerDidUpdateState(player: Player, previousState: PlayerState)
     {
+        print("playerDidUpdateState \(previousState.rawValue) \(player.state.rawValue) ")
+        
         self.activityIndicator.isHidden = true
         
         switch player.state
