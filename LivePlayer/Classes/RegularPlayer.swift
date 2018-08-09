@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import AVFoundation
 import AVKit
+import CoreMedia
 
 extension AVMediaSelectionOption: TextTrackMetadata
 {
@@ -29,8 +30,8 @@ extension AVMediaSelectionOption: TextTrackMetadata
     
     // MARK: Private Properties
     
-    fileprivate var player = AVPlayer()
-    
+    public var player = AVPlayer()
+        
     // MARK: Public API
     
     /// Sets an AVAsset on the player.
@@ -134,8 +135,19 @@ extension AVMediaSelectionOption: TextTrackMetadata
         return CMTimeMakeWithSeconds(time, Int32(NSEC_PER_SEC))
     }
     
-    var refreshFlag: Bool = true
+    private var refreshFlag: Bool = true
     
+    private var autoRestart: Bool = false
+    
+    private var timer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+            if let timer: Timer = timer {
+                RunLoop.main.add(timer, forMode: .commonModes)
+            }
+        }
+    }
+
     public func seek(to time: TimeInterval)
     {
         guard refreshFlag else { return }
@@ -158,14 +170,30 @@ extension AVMediaSelectionOption: TextTrackMetadata
     
     public func play()
     {
+        
+        timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
+
         self.player.play()
     }
     
     public func pause()
     {
+        
+        timer = nil
+        
         self.player.pause()
     }
     
+    @objc private func on(timer: Timer) {
+        // Check connection is need to retry
+        
+        if autoRestart {
+            NSLog("autoRestart = true")
+
+            self.player.play()
+        }
+    }
+
     // MARK: Lifecycle
     
     public override init()
@@ -183,6 +211,9 @@ extension AVMediaSelectionOption: TextTrackMetadata
     
     deinit
     {
+        
+        timer = nil
+
         if let playerItem = self.player.currentItem
         {
             self.removePlayerItemObservers(fromPlayerItem: playerItem)
@@ -226,13 +257,42 @@ extension AVMediaSelectionOption: TextTrackMetadata
         }
     }
     
-    private var playerTimeObserver: Any?
+    @objc func newErrorLogEntry(notification: Notification) {
+        guard let object = notification.object, let playerItem = object as? AVPlayerItem else {
+            return
+        }
+        guard let errorLog: AVPlayerItemErrorLog = playerItem.errorLog() else {
+            return
+        }
+        NSLog("newErrorLogEntry Error: \(errorLog)")
+        
+        // If File Not Found(404) error, retry a few minutes ago
+        
+        if errorLog.description.contains("404") {
+            NSLog("404")
+
+            autoRestart = true
+        }
+    }
     
+    @objc func failedToPlayToEndTime(notification: Notification) {
+        let error = notification.userInfo!["AVPlayerItemFailedToPlayToEndTimeErrorKey"]
+        NSLog("failedToPlayToEndTime Error: \(error)")
+    }
+
+    private var playerTimeObserver: Any?
     private func addPlayerItemObservers(toPlayerItem playerItem: AVPlayerItem)
     {
         playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.Status, options: [.initial, .new], context: nil)
         playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.PlaybackLikelyToKeepUp, options: [.initial, .new], context: nil)
         playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.LoadedTimeRanges, options: [.initial, .new], context: nil)
+        playerItem.addObserver(self, forKeyPath: "playbackBufferEmpty", options: [.initial, .new], context: nil)
+        player.addObserver(self, forKeyPath: "status", options: [.initial, .new], context: nil)
+        
+        let center = NotificationCenter.default
+        center.addObserver(self, selector: #selector(newErrorLogEntry(notification:)), name: .AVPlayerItemNewErrorLogEntry, object: player.currentItem)
+        center.addObserver(self, selector: #selector(failedToPlayToEndTime(notification:)), name: .AVPlayerItemFailedToPlayToEndTime, object: player.currentItem)
+
     }
     
     private func removePlayerItemObservers(fromPlayerItem playerItem: AVPlayerItem)
@@ -272,6 +332,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?)
     {
         // Player Item Observers
+        print("observeValue \(keyPath) \(object)")
         
         if keyPath == KeyPath.PlayerItem.Status
         {
@@ -291,11 +352,12 @@ extension AVMediaSelectionOption: TextTrackMetadata
         {
             if let loadedTimeRanges = change?[.newKey] as? [NSValue]
             {
+                autoRestart = false
                 self.playerItemLoadedTimeRangesDidChange(loadedTimeRanges: loadedTimeRanges)
             }
         }
             
-        // Player Observers
+            // Player Observers
             
         else if keyPath == KeyPath.Player.Rate
         {
@@ -305,6 +367,17 @@ extension AVMediaSelectionOption: TextTrackMetadata
             }
         }
             
+            // Player Observers
+            
+        else if keyPath == "playbackBufferEmpty"
+        {
+            if let playbackBufferEmpty = change?[.newKey] as? Bool
+            {
+                
+                //self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
+            }
+        }
+        
         // Fall Through Observers
             
         else
@@ -331,6 +404,8 @@ extension AVMediaSelectionOption: TextTrackMetadata
             
             self.state = .failed
         }
+        
+        // player.reasonForWaitingToPlay == AVPlayer.WaitingReason.noItemToPlay
     }
     
     private func playerRateDidChange(rate: Float)
@@ -340,6 +415,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
     
     private func playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: Bool)
     {
+        print("playerItemPlaybackLikelyToKeepUpDidChange")
         let state: PlayerState = playbackLikelyToKeepUp ? .ready : .loading
         
         self.state = state
