@@ -13,7 +13,6 @@
 		70892702211137E800423538 /* RegularPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FE211137E800423538 /* RegularPlayer.swift */; };
 		70892703211137E800423538 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FF211137E800423538 /* Player.swift */; };
 		70892704211137E800423538 /* AVPlayer+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70892700211137E800423538 /* AVPlayer+Utilities.swift */; };
-		7089270821113D9900423538 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7089270721113D9900423538 /* AVFoundation.framework */; };
 		732A922A1C44D5B9AD67034757125602 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		76B7BA87E4CD9D6F442836AB8A695C42 /* Pods-LivePlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 5936B31A0C00741728718B93A3AB4BE9 /* Pods-LivePlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7E3C0AD1F523A7A9A491664FB78C39CE /* LivePlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 847D1DA43B9E088D17C7496A65B1D551 /* LivePlayer-dummy.m */; };
@@ -103,7 +102,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7089270821113D9900423538 /* AVFoundation.framework in Frameworks */,
 				19697EFFE6D31CEEC33C73B3E61EE9A8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,7 +417,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-LivePlayer_Tests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-LivePlayer_Tests/Pods-LivePlayer_Tests.modulemap";
@@ -454,7 +452,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/LivePlayer/LivePlayer-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/LivePlayer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/LivePlayer/LivePlayer.modulemap";
 				PRODUCT_MODULE_NAME = LivePlayer;
@@ -486,7 +484,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-LivePlayer_Example/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-LivePlayer_Example/Pods-LivePlayer_Example.modulemap";
@@ -521,7 +519,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-LivePlayer_Tests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-LivePlayer_Tests/Pods-LivePlayer_Tests.modulemap";
@@ -555,7 +553,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/LivePlayer/LivePlayer-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/LivePlayer/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/LivePlayer/LivePlayer.modulemap";
 				PRODUCT_MODULE_NAME = LivePlayer;
@@ -588,7 +586,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-LivePlayer_Example/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-LivePlayer_Example/Pods-LivePlayer_Example.modulemap";
@@ -660,7 +658,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -720,7 +718,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LivePlayer'
-  s.version          = '0.1.1'
+  s.version          = '0.2.0'
   s.summary          = 'Live/VOD Player based AVPlayer.'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/banggaoo/LivePlayer.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
 
   s.source_files = 'LivePlayer/Classes/**/*'
   
