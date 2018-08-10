@@ -137,8 +137,8 @@ extension AVMediaSelectionOption: TextTrackMetadata
     
     private var refreshFlag: Bool = true
     
-    private var autoRestart: Bool = false
-    
+    private var autoRestartCount: Int = 0
+
     private var timer: Timer? {
         didSet {
             oldValue?.invalidate()
@@ -187,10 +187,22 @@ extension AVMediaSelectionOption: TextTrackMetadata
     @objc private func on(timer: Timer) {
         // Check connection is need to retry
         
-        if autoRestart {
-            NSLog("autoRestart = true")
+        if autoRestartCount > 5 {
+            NSLog("autoRestartCount > 5")
+            autoRestartCount = 0
 
-            self.player.play()
+            guard let asset: AVAsset = self.player.currentItem?.asset else { return }
+            
+            set(asset)
+            return
+        }
+        
+        if autoRestartCount > 0 {
+            NSLog("autoRestartCount > 0")
+
+            //if self.player.timeControlStatus == .paused {
+                self.player.playImmediately(atRate: 1.0)
+            //}
         }
     }
 
@@ -258,6 +270,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
     }
     
     @objc func newErrorLogEntry(notification: Notification) {
+        
         guard let object = notification.object, let playerItem = object as? AVPlayerItem else {
             return
         }
@@ -270,14 +283,37 @@ extension AVMediaSelectionOption: TextTrackMetadata
         
         if errorLog.description.contains("404") {
             NSLog("404")
-
-            autoRestart = true
+            
+            turnAutoReloadOnDelay()
         }
     }
     
     @objc func failedToPlayToEndTime(notification: Notification) {
-        let error = notification.userInfo!["AVPlayerItemFailedToPlayToEndTimeErrorKey"]
+        
+        guard let userInfo = notification.userInfo, let error = userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error else {
+            return
+        }
+        
+        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
         NSLog("failedToPlayToEndTime Error: \(error)")
+    
+        if error.localizedDescription.contains("404") {
+            NSLog("404")
+            
+            turnAutoReloadOnDelay()
+        }
+    }
+    
+    func turnAutoReloadOnDelay() {
+ 
+        weak var weakSelf = self
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            
+            if (weakSelf?.autoRestartCount)! > 0 {
+            
+                weakSelf?.autoRestartCount = (weakSelf?.autoRestartCount)! + 5
+            }
+        }
     }
 
     private var playerTimeObserver: Any?
@@ -345,6 +381,9 @@ extension AVMediaSelectionOption: TextTrackMetadata
         {
             if let playbackLikelyToKeepUp = change?[.newKey] as? Bool
             {
+                
+                self.player.playImmediately(atRate: 1.0)
+
                 self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
             }
         }
@@ -352,13 +391,13 @@ extension AVMediaSelectionOption: TextTrackMetadata
         {
             if let loadedTimeRanges = change?[.newKey] as? [NSValue]
             {
-                autoRestart = false
+                autoRestartCount = 0
                 self.playerItemLoadedTimeRangesDidChange(loadedTimeRanges: loadedTimeRanges)
             }
         }
             
-            // Player Observers
-            
+        // Player Observers
+        
         else if keyPath == KeyPath.Player.Rate
         {
             if let rate = change?[.newKey] as? Float
@@ -367,12 +406,13 @@ extension AVMediaSelectionOption: TextTrackMetadata
             }
         }
             
-            // Player Observers
+        // Player Observers
             
         else if keyPath == "playbackBufferEmpty"
         {
             if let playbackBufferEmpty = change?[.newKey] as? Bool
             {
+                autoRestartCount = autoRestartCount + 1
                 
                 //self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
             }
