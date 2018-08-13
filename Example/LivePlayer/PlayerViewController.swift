@@ -41,7 +41,7 @@ class PlayerViewController: UIViewController, PlayerDelegate {
 
             _videoURL = newValue
 
-            print("self.player.set \(_videoURL)")
+            print("self.player.set \(String(describing: _videoURL))")
             self.player.set(AVURLAsset(url: _videoURL!))
         }
     }

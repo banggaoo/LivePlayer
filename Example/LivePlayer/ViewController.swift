@@ -10,8 +10,7 @@ import UIKit
 import LivePlayer
 import AVFoundation
 
-class ViewController: UIViewController
-{
+class ViewController: UIViewController {
    
     @IBAction func singleButton(_ sender: Any) {
         
@@ -74,8 +73,7 @@ class ViewController: UIViewController
         self.present(playerScrollViewController, animated: true, completion: nil)
     }
  
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient,
