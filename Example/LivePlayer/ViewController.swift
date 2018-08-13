@@ -10,20 +10,70 @@ import UIKit
 import LivePlayer
 import AVFoundation
 
-class ViewController: UIViewController, PlayerDelegate
+class ViewController: UIViewController
 {
-    private struct Constants
-    {
-        static let VideoURL = URL(string: "https://wowzaprod179-i.akamaihd.net/hls/live/678082/1b11010a/playlist.m3u8")!
+   
+    @IBAction func singleButton(_ sender: Any) {
+        
+        let playerViewController: PlayerViewController = UIStoryboard(name: "Player", bundle: nil).instantiateViewController(withIdentifier: "PlayerViewController") as! PlayerViewController
+        
+        playerViewController.delegate = self
+
+        playerViewController.videoURL = URL(string: "https://wowzaprod179-i.akamaihd.net/hls/live/678082/1b11010a/playlist.m3u8")!
+        
+        self.present(playerViewController, animated: true, completion: nil)
     }
     
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var slider: UISlider!
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
-    private let player = RegularPlayer()
-    
+    @IBAction func infiniteButton(_ sender: Any) {
+ 
+         let lives: LivesModel = LivesModel()
+         
+         lives.media = [LiveModel]()
+        
+        let liveList1: LiveModel = LiveModel()
+        liveList1.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+        liveList1.subject = "First"
+        
+        lives.media?.append(liveList1)
+        
+        let liveList2: LiveModel = LiveModel()
+        liveList2.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"
+        liveList2.subject = "Second"
+        
+        lives.media?.append(liveList2)
+        
+        let liveList3: LiveModel = LiveModel()
+        liveList3.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+        liveList3.subject = "Third"
+        
+        lives.media?.append(liveList3)
+        
+        let liveList4: LiveModel = LiveModel()
+        liveList4.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"
+        liveList4.subject = "Fourth"
+        
+        lives.media?.append(liveList4)
+        
+        let liveList5: LiveModel = LiveModel()
+        liveList5.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+        liveList5.subject = "Fifth"
+        
+        lives.media?.append(liveList5)
+        
+        let liveList6: LiveModel = LiveModel()
+        liveList6.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"
+        liveList6.subject = "Sixth"
+        
+        lives.media?.append(liveList6)
+ 
+        let playerScrollViewController = UIStoryboard(name: "Player", bundle: nil).instantiateViewController(withIdentifier: "PlayerScrollViewController") as! PlayerScrollViewController
+        
+        playerScrollViewController.viewModel.list = lives.media
+        playerScrollViewController.viewModel.index = 0
+        
+        self.present(playerScrollViewController, animated: true, completion: nil)
+    }
+ 
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -31,134 +81,22 @@ class ViewController: UIViewController, PlayerDelegate
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient,
                                                          mode: AVAudioSessionModeMoviePlayback,
                                                          options: [.mixWithOthers])
-        player.delegate = self
-        
-        self.addPlayerToView()
-        
-        self.player.set(AVURLAsset(url: Constants.VideoURL))
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        player.play()
-    }
-    
-    // MARK: Setup
-    
-    private func addPlayerToView()
-    {
-        player.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        player.view.frame = self.view.bounds
-        self.view.insertSubview(player.view, at: 0)
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func didTapPlayButton()
-    {
-        self.player.playing ? self.player.pause() : self.player.play()
-    }
-    
-    private func getSeekTimeInterval() -> TimeInterval {
-        
-        return Double(self.slider.value) * self.player.duration
-    }
-    
-    @IBAction func didChangeSliderValue()
-    {
-        self.player.seek(to: getSeekTimeInterval())
-    }
-    
-    @IBAction func didFinishSliderValue()
-    {
-        self.player.forceSeek(to: getSeekTimeInterval())
-    }
-    
-    // MARK: VideoPlayerDelegate
-    
-    func playerDidUpdateState(player: Player, previousState: PlayerState)
-    {
-        print("playerDidUpdateState \(previousState.rawValue) \(player.state.rawValue) ")
-        
-        self.activityIndicator.isHidden = true
-        
-        switch player.state
-        {
-        case .loading:
-            
-            self.activityIndicator.isHidden = false
-            
-        case .ready:
-            
-            break
-            
-        case .failed:
-            
-            NSLog("🚫 \(String(describing: player.error))")
-        }
-    }
-    
-    func playerDidUpdatePlaying(player: Player)
-    {
-        self.playButton.isSelected = player.playing
-    }
-    
-    func playerDidUpdateTime(player: Player)
-    {
-        guard player.duration > 0 else
-        {
-            return
-        }
-        
-        let ratio = player.time / player.duration
-        
-        if self.slider.isHighlighted == false
-        {
-            self.slider.value = Float(ratio)
-        }
-    }
-    
-    func playerDidUpdateBufferedTime(player: Player)
-    {
-        guard player.duration > 0 else
-        {
-            return
-        }
-        
-        let ratio = Int((player.bufferedTime / player.duration) * 100)
-        
-        self.label.text = "Buffer: \(ratio)%"
     }
 }
 
-open class CustomSlider : UISlider {
+extension ViewController: PlayerViewDelegate {
     
-    @IBInspectable open var trackWidth: CGFloat = 2 {
-        didSet {setNeedsDisplay()}
+    @objc func didTapExitButton() {
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
-    override open func trackRect(forBounds bounds: CGRect) -> CGRect {
-        let defaultBounds = super.trackRect(forBounds: bounds)
-        return CGRect(
-            x: defaultBounds.origin.x,
-            y: defaultBounds.origin.y + defaultBounds.size.height/2 - trackWidth/2,
-            width: defaultBounds.size.width,
-            height: trackWidth
-        )
-    }
-    
-    override open func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
+    @objc func didTapPlayButton(_ player: RegularPlayer) {
         
-        let multiValue: Float = value - 0.5
-        let pixelAdjustment: Float = 35.0
-        let xOriginDelta: Float = multiValue * ( Float(bounds.size.width) - pixelAdjustment)
-        
-        return CGRect(
-            x: bounds.origin.x + CGFloat(xOriginDelta),
-            y: bounds.origin.y,
-            width: bounds.size.width,
-            height: bounds.size.height
-        )
     }
 }
