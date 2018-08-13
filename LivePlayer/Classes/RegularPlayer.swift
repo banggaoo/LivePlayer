@@ -309,9 +309,11 @@ extension AVMediaSelectionOption: TextTrackMetadata
         weak var weakSelf = self
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             
-            if (weakSelf?.autoRestartCount)! > 0 {
+            guard let strongSelf = weakSelf else { return }
             
-                weakSelf?.autoRestartCount = (weakSelf?.autoRestartCount)! + 5
+            if strongSelf.autoRestartCount > 0 {
+                
+                strongSelf.autoRestartCount = strongSelf.autoRestartCount + 5
             }
         }
     }
@@ -382,7 +384,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
             if let playbackLikelyToKeepUp = change?[.newKey] as? Bool
             {
                 
-                self.player.playImmediately(atRate: 1.0)
+                //self.player.playImmediately(atRate: 1.0)
 
                 self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
             }
