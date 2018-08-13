@@ -330,7 +330,6 @@ extension AVMediaSelectionOption: TextTrackMetadata
         let center = NotificationCenter.default
         center.addObserver(self, selector: #selector(newErrorLogEntry(notification:)), name: .AVPlayerItemNewErrorLogEntry, object: player.currentItem)
         center.addObserver(self, selector: #selector(failedToPlayToEndTime(notification:)), name: .AVPlayerItemFailedToPlayToEndTime, object: player.currentItem)
-
     }
     
     private func removePlayerItemObservers(fromPlayerItem playerItem: AVPlayerItem)
@@ -338,6 +337,12 @@ extension AVMediaSelectionOption: TextTrackMetadata
         playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.Status, context: nil)
         playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.PlaybackLikelyToKeepUp, context: nil)
         playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.LoadedTimeRanges, context: nil)
+        playerItem.removeObserver(self, forKeyPath: "playbackBufferEmpty", context: nil)
+        player.removeObserver(self, forKeyPath: "status", context: nil)
+        
+        let center = NotificationCenter.default
+        center.removeObserver(self, name: .AVPlayerItemNewErrorLogEntry, object: player.currentItem)
+        center.removeObserver(self, name: .AVPlayerItemFailedToPlayToEndTime, object: player.currentItem)
     }
     
     private func addPlayerObservers()
@@ -370,7 +375,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?)
     {
         // Player Item Observers
-        print("observeValue \(keyPath) \(object)")
+        print("observeValue \(String(describing: keyPath)) \(String(describing: object))")
         
         if keyPath == KeyPath.PlayerItem.Status
         {
