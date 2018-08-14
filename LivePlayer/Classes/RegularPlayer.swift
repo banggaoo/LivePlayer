@@ -171,7 +171,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
     public func play()
     {
         
-        timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
+        timer = Timer(timeInterval: 3.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
 
         self.player.play()
     }
@@ -189,7 +189,7 @@ extension AVMediaSelectionOption: TextTrackMetadata
         
         if autoRestartCount > 5 {
             NSLog("autoRestartCount > 5")
-            autoRestartCount = 0
+            //autoRestartCount = 0
 
             guard let asset: AVAsset = self.player.currentItem?.asset else { return }
             
