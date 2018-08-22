@@ -12,14 +12,6 @@ import AVFoundation
 import AVKit
 import CoreMedia
 
-extension AVMediaSelectionOption: TextTrackMetadata
-{
-    public var isSDHTrack: Bool
-    {
-        return self.hasMediaCharacteristic(.describesMusicAndSoundForAccessibility) && self.hasMediaCharacteristic(.transcribesSpokenDialogForAccessibility)
-    }
-}
-
 /// A RegularPlayer is used to play regular videos.
 @objc open class RegularPlayer: NSObject, Player, ProvidesView
 {
@@ -53,6 +45,8 @@ extension AVMediaSelectionOption: TextTrackMetadata
         self.addPlayerItemObservers(toPlayerItem: playerItem)
         
         self.player.replaceCurrentItem(with: playerItem)
+        
+        self.player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
     }
     
     // MARK: ProvidesView
@@ -171,7 +165,13 @@ extension AVMediaSelectionOption: TextTrackMetadata
     public func play()
     {
         
-        timer = Timer(timeInterval: 3.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
+        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
+
+        player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
+
+        timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
+
+        player.currentItem?.preferredPeakBitRate = 1000.0
 
         self.player.play()
     }
@@ -184,9 +184,17 @@ extension AVMediaSelectionOption: TextTrackMetadata
         self.player.pause()
     }
     
+    public func stop() {
+        
+        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
+        
+        pause()
+    }
+    
     @objc private func on(timer: Timer) {
         // Check connection is need to retry
-        
+        NSLog("on(timer: Timer")
+
         if autoRestartCount > 5 {
             NSLog("autoRestartCount > 5")
             autoRestartCount = 1
@@ -202,8 +210,9 @@ extension AVMediaSelectionOption: TextTrackMetadata
 
             autoRestartCount += 1
             
+            self.player.play()
             //if self.player.timeControlStatus == .paused {
-                self.player.playImmediately(atRate: 1.0)
+                //self.player.playImmediately(atRate: 1.0)
             //}
         }
     }

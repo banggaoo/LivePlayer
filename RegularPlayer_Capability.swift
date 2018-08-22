@@ -147,3 +147,11 @@ extension RegularPlayer: TextTrackCapable
         self.player.currentItem?.select(option, in: group)
     }
 }
+
+extension AVMediaSelectionOption: TextTrackMetadata
+{
+    public var isSDHTrack: Bool
+    {
+        return self.hasMediaCharacteristic(.describesMusicAndSoundForAccessibility) && self.hasMediaCharacteristic(.transcribesSpokenDialogForAccessibility)
+    }
+}

@@ -169,6 +169,9 @@ extension RegularPlayer {
             if let loadedTimeRanges = change?[.newKey] as? [NSValue]
             {
                 autoRestartCount = 0
+                
+                player.currentItem?.preferredPeakBitRate = 1024 * 1024 * 2
+
                 self.playerItemLoadedTimeRangesDidChange(loadedTimeRanges: loadedTimeRanges)
             }
         }
@@ -187,9 +190,12 @@ extension RegularPlayer {
             
         else if keyPath == "playbackBufferEmpty"
         {
+            
+            autoRestartCount = autoRestartCount + 1
+
             if let playbackBufferEmpty = change?[.newKey] as? Bool
             {
-                autoRestartCount = autoRestartCount + 1
+                //autoRestartCount = autoRestartCount + 1
                 
                 //self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
             }
