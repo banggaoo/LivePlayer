@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		007DDC0009CD02B400E0ADDB543ACFC1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		19697EFFE6D31CEEC33C73B3E61EE9A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		7058AE2B2126709F00D57989 /* RegularPlayer_Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7058AE2A2126709F00D57989 /* RegularPlayer_Capability.swift */; };
+		70756AD4212D4DF70086A587 /* RegularPlayer_Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70756AD3212D4DF70086A587 /* RegularPlayer_Observer.swift */; };
 		70892701211137E800423538 /* CMTime+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FD211137E800423538 /* CMTime+Utilities.swift */; };
 		70892702211137E800423538 /* RegularPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FE211137E800423538 /* RegularPlayer.swift */; };
 		70892703211137E800423538 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FF211137E800423538 /* Player.swift */; };
@@ -57,6 +59,8 @@
 		541B6F7D95E283B07ABAB8043A7AB165 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5936B31A0C00741728718B93A3AB4BE9 /* Pods-LivePlayer_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LivePlayer_Tests-umbrella.h"; sourceTree = "<group>"; };
 		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		7058AE2A2126709F00D57989 /* RegularPlayer_Capability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularPlayer_Capability.swift; sourceTree = "<group>"; };
+		70756AD3212D4DF70086A587 /* RegularPlayer_Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularPlayer_Observer.swift; sourceTree = "<group>"; };
 		708926FD211137E800423538 /* CMTime+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMTime+Utilities.swift"; path = "LivePlayer/Classes/CMTime+Utilities.swift"; sourceTree = "<group>"; };
 		708926FE211137E800423538 /* RegularPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegularPlayer.swift; path = LivePlayer/Classes/RegularPlayer.swift; sourceTree = "<group>"; };
 		708926FF211137E800423538 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = LivePlayer/Classes/Player.swift; sourceTree = "<group>"; };
@@ -116,6 +120,8 @@
 				708926FD211137E800423538 /* CMTime+Utilities.swift */,
 				708926FF211137E800423538 /* Player.swift */,
 				708926FE211137E800423538 /* RegularPlayer.swift */,
+				70756AD3212D4DF70086A587 /* RegularPlayer_Observer.swift */,
+				7058AE2A2126709F00D57989 /* RegularPlayer_Capability.swift */,
 				6B4A9B249A52B8E17B1D16551A79E071 /* Pod */,
 				FDB5DCE601876B9FC96D74CEA9B44EBD /* Support Files */,
 			);
@@ -364,6 +370,8 @@
 				70892702211137E800423538 /* RegularPlayer.swift in Sources */,
 				70892701211137E800423538 /* CMTime+Utilities.swift in Sources */,
 				70892704211137E800423538 /* AVPlayer+Utilities.swift in Sources */,
+				70756AD4212D4DF70086A587 /* RegularPlayer_Observer.swift in Sources */,
+				7058AE2B2126709F00D57989 /* RegularPlayer_Capability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
