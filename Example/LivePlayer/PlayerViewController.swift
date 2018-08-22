@@ -61,14 +61,14 @@ class PlayerViewController: UIViewController, PlayerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        self.player.play()
+        self.player.start()
         //self.player.player.playImmediately(atRate: 1.0)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        self.player.pause()
+        self.player.stop()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -92,7 +92,7 @@ class PlayerViewController: UIViewController, PlayerDelegate {
 
         delegate?.didTapPlayButton(self.player)
 
-        self.player.playing ? self.player.pause() : self.player.play()
+        self.player.playing ? self.player.stop() : self.player.start()
     }
 
     @IBAction func didTapExitButton() {

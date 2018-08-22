@@ -42,11 +42,11 @@ import CoreMedia
         
         let playerItem = AVPlayerItem(asset: asset)
         
+        playerItem.preferredForwardBufferDuration = TimeInterval(1)
+        
         self.addPlayerItemObservers(toPlayerItem: playerItem)
         
         self.player.replaceCurrentItem(with: playerItem)
-        
-        self.player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
     }
     
     // MARK: ProvidesView
@@ -162,14 +162,22 @@ import CoreMedia
         self.time = time
     }
     
+    var userWantToPlay = false
+    
+    public func start() {
+        userWantToPlay = true
+        
+        timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
+
+        play()
+    }
+
     public func play()
     {
         
         player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
 
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
-
-        timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
 
         player.currentItem?.preferredPeakBitRate = 1000.0
 
@@ -179,14 +187,15 @@ import CoreMedia
     public func pause()
     {
         
-        timer = nil
-        
+        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
+
         self.player.pause()
     }
     
     public func stop() {
+        userWantToPlay = false
         
-        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
+        timer = nil
         
         pause()
     }
@@ -195,25 +204,28 @@ import CoreMedia
         // Check connection is need to retry
         NSLog("on(timer: Timer")
 
-        if autoRestartCount > 5 {
-            NSLog("autoRestartCount > 5")
-            autoRestartCount = 1
-
-            guard let asset: AVAsset = self.player.currentItem?.asset else { return }
+        if userWantToPlay {
             
-            set(asset)
-            return
-        }
-        
-        if autoRestartCount > 0 {
-            NSLog("autoRestartCount > 0")
-
-            autoRestartCount += 1
+            if autoRestartCount > 5 {
+                NSLog("autoRestartCount > 5")
+                autoRestartCount = 1
+                
+                guard let asset: AVAsset = self.player.currentItem?.asset else { return }
+                
+                set(asset)
+                return
+            }
             
-            self.player.play()
-            //if self.player.timeControlStatus == .paused {
+            if autoRestartCount > 0 {
+                NSLog("autoRestartCount > 0")
+                
+                autoRestartCount += 1
+                
+                play()
+                //if self.player.timeControlStatus == .paused {
                 //self.player.playImmediately(atRate: 1.0)
-            //}
+                //}
+            }
         }
     }
 
@@ -414,7 +426,10 @@ import CoreMedia
             {
                 
                 //self.player.playImmediately(atRate: 1.0)
-                self.play()
+                
+                if userWantToPlay {
+                    self.play()
+                }
                 
                 self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
             }
