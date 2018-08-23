@@ -445,6 +445,7 @@ import CoreMedia
             {
                 
                 //self.player.playImmediately(atRate: 1.0)
+                self.player.currentItem?.preferredPeakBitRate = 1024 * 1024 * 4
                 
                 if userWantToPlay {
                     self.play()
