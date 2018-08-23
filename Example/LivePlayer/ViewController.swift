@@ -11,7 +11,12 @@ import LivePlayer
 import AVFoundation
 
 class ViewController: UIViewController {
-   
+    //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/chunklist.m3u8
+    //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/3ngjunba/00000000/media_11495.ts
+    
+    //https://wowzaprod179-i.akamaihd.net/hls/live/678082/1b11010a_1_448/6x7dqsu4/00000000/media_67.ts
+    //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/3ngjunba/00000000/media_11495.ts
+
     @IBAction func singleButton(_ sender: Any) {
         
         let playerViewController: PlayerViewController = UIStoryboard(name: "Player", bundle: nil).instantiateViewController(withIdentifier: "PlayerViewController") as! PlayerViewController

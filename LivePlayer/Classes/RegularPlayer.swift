@@ -183,7 +183,7 @@ import CoreMedia
 
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
 
-        player.currentItem?.preferredPeakBitRate = 1000.0
+        //player.currentItem?.preferredPeakBitRate = 1000.0
 
         player.play()
         
@@ -225,6 +225,11 @@ import CoreMedia
 
         if userWantToPlay {
             
+            if state == .loading {
+                
+                autoRestartCount += 1
+            }
+            
             if autoRestartCount > 5 {
                 NSLog("autoRestartCount > 5")
                 autoRestartCount = 1
@@ -237,8 +242,6 @@ import CoreMedia
             
             if autoRestartCount > 0 {
                 NSLog("autoRestartCount > 0")
-                
-                autoRestartCount += 1
                 
                 play()
                 //if self.player.timeControlStatus == .paused {
