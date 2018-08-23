@@ -225,11 +225,14 @@ import CoreMedia
 
         if userWantToPlay {
             
-            if state == .loading {
+            if state == .ready {
+                
+                autoRestartCount = 0
+            }else{
                 
                 autoRestartCount += 1
             }
-            
+
             if autoRestartCount > 5 {
                 NSLog("autoRestartCount > 5")
                 autoRestartCount = 1
@@ -365,7 +368,7 @@ import CoreMedia
     func turnAutoReloadOnDelay() {
         
         weak var weakSelf = self
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             
             guard let strongSelf = weakSelf else { return }
             
@@ -461,7 +464,7 @@ import CoreMedia
         {
             if let loadedTimeRanges = change?[.newKey] as? [NSValue]
             {
-                autoRestartCount = 0
+                //autoRestartCount = 0
                 
                 self.playerItemLoadedTimeRangesDidChange(loadedTimeRanges: loadedTimeRanges)
             }
