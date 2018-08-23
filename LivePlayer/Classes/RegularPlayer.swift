@@ -41,12 +41,16 @@ import CoreMedia
         // Replace it with the new item
         
         let playerItem = AVPlayerItem(asset: asset)
-        
-        playerItem.preferredForwardBufferDuration = TimeInterval(1)
-        
+
         self.addPlayerItemObservers(toPlayerItem: playerItem)
         
         self.player.replaceCurrentItem(with: playerItem)
+        
+        self.player.currentItem?.preferredPeakBitRate = 1000.0
+
+        self.player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
+
+        self.player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
     }
     
     // MARK: ProvidesView
@@ -181,28 +185,43 @@ import CoreMedia
 
         player.currentItem?.preferredPeakBitRate = 1000.0
 
-        self.player.play()
+        player.play()
+        
+        // Upgrate quality after 1 sec
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
+
+            guard let strongSelf = self else { return }
+            
+            if strongSelf.player.timeControlStatus != .paused {
+                NSLog("preferredPeakBitRate = 1024 * 1024 * 2")
+                strongSelf.player.currentItem?.preferredPeakBitRate = 1024 * 1024 * 4
+            }
+        })
     }
     
     public func pause()
     {
-        
+
+        player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
+
+        player.currentItem?.cancelPendingSeeks()
+
         player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
 
-        self.player.pause()
+        player.pause()
     }
     
     public func stop() {
+        
         userWantToPlay = false
         
         timer = nil
-        
+
         pause()
     }
     
     @objc private func on(timer: Timer) {
         // Check connection is need to retry
-        NSLog("on(timer: Timer")
 
         if userWantToPlay {
             
@@ -439,8 +458,6 @@ import CoreMedia
             if let loadedTimeRanges = change?[.newKey] as? [NSValue]
             {
                 autoRestartCount = 0
-                
-                player.currentItem?.preferredPeakBitRate = 1024 * 1024 * 2
                 
                 self.playerItemLoadedTimeRangesDidChange(loadedTimeRanges: loadedTimeRanges)
             }
