@@ -29,7 +29,7 @@ import CoreMedia
     /// Sets an AVAsset on the player.
     ///
     /// - Parameter asset: The AVAsset
-    @objc open func set(_ asset: AVAsset)
+    @objc open func set(_ asset: AVAsset?)
     {
         // Prepare the old item for removal
         
@@ -40,17 +40,24 @@ import CoreMedia
         
         // Replace it with the new item
         
-        let playerItem = AVPlayerItem(asset: asset)
+        if let asset = asset {
+            
+            let playerItem = AVPlayerItem(asset: asset)
+            
+            self.addPlayerItemObservers(toPlayerItem: playerItem)
+            
+            self.player.replaceCurrentItem(with: playerItem)
+            
+            self.player.currentItem?.preferredPeakBitRate = 1000.0
+            
+            self.player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
+            
+            self.player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
 
-        self.addPlayerItemObservers(toPlayerItem: playerItem)
-        
-        self.player.replaceCurrentItem(with: playerItem)
-        
-        self.player.currentItem?.preferredPeakBitRate = 1000.0
-
-        self.player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
-
-        self.player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
+        }else{
+            
+            self.player.replaceCurrentItem(with: nil)
+        }
     }
     
     // MARK: ProvidesView
@@ -169,6 +176,9 @@ import CoreMedia
     var userWantToPlay = false
     
     public func start() {
+        
+        guard userWantToPlay == false else { return }
+        
         userWantToPlay = true
         
         timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
@@ -179,7 +189,7 @@ import CoreMedia
     public func play()
     {
         
-        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
+        //player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
 
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
 
@@ -205,14 +215,17 @@ import CoreMedia
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
 
         player.currentItem?.cancelPendingSeeks()
-
-        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
+        player.currentItem?.asset.cancelLoading()
+        
+        //player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
 
         player.pause()
     }
     
     public func stop() {
         
+        guard userWantToPlay == true else { return }
+
         userWantToPlay = false
         
         timer = nil
@@ -365,6 +378,17 @@ import CoreMedia
         
     }
     
+    @objc func playbackDidPlayToEndTime(notification: Notification) {
+        NSLog("playbackDidPlayToEndTime notification: \(notification)")
+        
+        guard let userInfo = notification.userInfo else { return }
+        
+        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
+        
+    }
+    
+    
+    
     func turnAutoReloadOnDelay() {
         
         weak var weakSelf = self
@@ -391,6 +415,7 @@ import CoreMedia
         center.addObserver(self, selector: #selector(newErrorLogEntry(notification:)), name: .AVPlayerItemNewErrorLogEntry, object: player.currentItem)
         center.addObserver(self, selector: #selector(failedToPlayToEndTime(notification:)), name: .AVPlayerItemFailedToPlayToEndTime, object: player.currentItem)
         center.addObserver(self, selector: #selector(playbackStalled(notification:)), name: .AVPlayerItemPlaybackStalled, object: player.currentItem)
+        center.addObserver(self, selector: #selector(playbackDidPlayToEndTime(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
     }
     
     func removePlayerItemObservers(fromPlayerItem playerItem: AVPlayerItem)
@@ -451,7 +476,6 @@ import CoreMedia
             {
                 
                 //self.player.playImmediately(atRate: 1.0)
-                self.player.currentItem?.preferredPeakBitRate = 1024 * 1024 * 4
                 
                 if userWantToPlay {
                     self.play()
