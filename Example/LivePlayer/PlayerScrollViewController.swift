@@ -55,6 +55,8 @@ class PlayerScrollViewController: UIViewController, PlayerViewDelegate {
         guard let viewController: PlayerViewController = viewController as? PlayerViewController else { return }
 
         viewController.videoURL = videoURL
+        
+        viewController.loadVideo()
     }
 
     @objc func didTapExitButton() {
@@ -101,8 +103,10 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
 
         guard let baseIndex = viewControllers.index(of: base as! PlayerViewController) else { return }
 
-        let newViewController = getViewController(baseIndex: baseIndex, offset: offset)
-
+        guard let newViewController: PlayerViewController = getViewController(baseIndex: baseIndex, offset: offset) as? PlayerViewController else { return }
+        
+        guard newViewController.isPreload else { return }
+        
         placePlayers(index: newIndex, viewController: newViewController)
     }
 

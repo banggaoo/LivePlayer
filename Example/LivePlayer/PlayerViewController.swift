@@ -30,22 +30,10 @@ class PlayerViewController: UIViewController, PlayerDelegate {
 
     public var index: Int = 0
 
-    public var _videoURL: URL? = URL(string: "")
-    public var videoURL: URL? {
+    public var videoURL: URL?
 
-        get { return _videoURL }
-
-        set {
-
-            guard _videoURL?.absoluteString != newValue?.absoluteString else { return }
-
-            _videoURL = newValue
-
-            print("self.player.set \(String(describing: _videoURL))")
-            self.player.set(AVURLAsset(url: _videoURL!))
-        }
-    }
-
+    public var isPreload = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -68,6 +56,12 @@ class PlayerViewController: UIViewController, PlayerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        if !isPreload {
+            
+            videoURL = nil
+            loadVideo()
+        }
+        
         self.player.stop()
     }
 
@@ -84,6 +78,18 @@ class PlayerViewController: UIViewController, PlayerDelegate {
         player.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         player.view.frame = self.view.bounds
         self.view.insertSubview(player.view, at: 0)
+    }
+    
+    public func loadVideo() {
+        
+        if let videoURL = videoURL {
+            
+            self.player.set(AVURLAsset(url: videoURL))
+
+        }else{
+            
+            self.player.set(nil)
+        }
     }
 
     // MARK: Actions
