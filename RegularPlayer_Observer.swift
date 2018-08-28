@@ -9,80 +9,13 @@ import Foundation
 import AVFoundation
 
 extension RegularPlayer {
-        
-    @objc func newErrorLogEntry(notification: Notification) {
-        
-        guard let object = notification.object, let playerItem = object as? AVPlayerItem else { return }
-        
-        guard let errorLog: AVPlayerItemErrorLog = playerItem.errorLog() else { return }
-        
-        //nslog("newErrorLogEntry Error: \(errorLog)")
-        
-        // If File Not Found(404) error, retry a few minutes ago
-        
-        if errorLog.description.contains("404") {
-            //nslog("404")
-            
-            turnAutoReloadOnDelay()
-        }
-    }
-    
-    @objc func failedToPlayToEndTime(notification: Notification) {
-        
-        guard let userInfo = notification.userInfo, let error = userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error else {
-            return
-        }
-        
-        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
-        //nslog("failedToPlayToEndTime Error: \(error)")
-        
-        if error.localizedDescription.contains("404") {
-            //nslog("404")
-            
-            turnAutoReloadOnDelay()
-        }
-    }
-    
-    @objc func playbackStalled(notification: Notification) {
-        //nslog("playbackStalled notification: \(notification)")
-        
-        guard let userInfo = notification.userInfo else { return }
-        
-        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
-        
-    }
-    
-    @objc func playbackDidPlayToEndTime(notification: Notification) {
-        //nslog("playbackDidPlayToEndTime notification: \(notification)")
-        
-        guard let userInfo = notification.userInfo else { return }
-        
-        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
-        
-    }
-    
-    func turnAutoReloadOnDelay() {
-        
-        autoRestartCount += 1
-        
-        weak var weakSelf = self
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-            
-            guard let strongSelf = weakSelf else { return }
-            
-            if strongSelf.autoRestartCount > 0 {
-                
-                strongSelf.autoRestartCount += 5
-            }
-        }
-    }
     
     func addPlayerItemObservers(toPlayerItem playerItem: AVPlayerItem)
     {
-        playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.Status, options: [.initial, .new], context: nil)
-        playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.PlaybackLikelyToKeepUp, options: [.initial, .new], context: nil)
-        playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.LoadedTimeRanges, options: [.initial, .new], context: nil)
-        playerItem.addObserver(self, forKeyPath: KeyPath.PlayerItem.PlaybackBufferEmpty, options: [.initial, .new], context: nil)
+        playerItem.addObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.Status, options: [.initial, .new], context: nil)
+        playerItem.addObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.PlaybackLikelyToKeepUp, options: [.initial, .new], context: nil)
+        playerItem.addObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.LoadedTimeRanges, options: [.initial, .new], context: nil)
+        playerItem.addObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.PlaybackBufferEmpty, options: [.initial, .new], context: nil)
         
         let center = NotificationCenter.default
         center.addObserver(self, selector: #selector(newErrorLogEntry(notification:)), name: .AVPlayerItemNewErrorLogEntry, object: player.currentItem)
@@ -93,10 +26,10 @@ extension RegularPlayer {
     
     func removePlayerItemObservers(fromPlayerItem playerItem: AVPlayerItem)
     {
-        playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.Status, context: nil)
-        playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.PlaybackLikelyToKeepUp, context: nil)
-        playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.LoadedTimeRanges, context: nil)
-        playerItem.removeObserver(self, forKeyPath: KeyPath.PlayerItem.PlaybackBufferEmpty, context: nil)
+        playerItem.removeObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.Status, context: nil)
+        playerItem.removeObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.PlaybackLikelyToKeepUp, context: nil)
+        playerItem.removeObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.LoadedTimeRanges, context: nil)
+        playerItem.removeObserver(self, forKeyPath: RegularPlayerKeyPath.PlayerItem.PlaybackBufferEmpty, context: nil)
         
         let center = NotificationCenter.default
         center.removeObserver(self, name: .AVPlayerItemNewErrorLogEntry, object: player.currentItem)
@@ -105,11 +38,11 @@ extension RegularPlayer {
     
     func addPlayerObservers()
     {
-        self.player.addObserver(self, forKeyPath: KeyPath.Player.Rate, options: [.initial, .new], context: nil)
-        self.player.addObserver(self, forKeyPath: KeyPath.Player.Status, options: [.initial, .new], context: nil)
-        self.player.addObserver(self, forKeyPath: KeyPath.Player.TimeControlStatus, options: [.initial, .new], context: nil)
+        self.player.addObserver(self, forKeyPath: RegularPlayerKeyPath.Player.Rate, options: [.initial, .new], context: nil)
+        self.player.addObserver(self, forKeyPath: RegularPlayerKeyPath.Player.Status, options: [.initial, .new], context: nil)
+        self.player.addObserver(self, forKeyPath: RegularPlayerKeyPath.Player.TimeControlStatus, options: [.initial, .new], context: nil)
         
-        self.playerTimeObserver = self.player.addPeriodicTimeObserver(forInterval: getSeekTime(to: Constants.TimeUpdateInterval), queue: DispatchQueue.main, using: { [weak self] (cmTime) in
+        self.playerTimeObserver = self.player.addPeriodicTimeObserver(forInterval: getSeekTime(to: RegularPlayerConstants.TimeUpdateInterval), queue: DispatchQueue.main, using: { [weak self] (cmTime) in
             
             if let strongSelf = self, let time = cmTime.timeInterval
             {
@@ -120,9 +53,9 @@ extension RegularPlayer {
     
     func removePlayerObservers()
     {
-        self.player.removeObserver(self, forKeyPath: KeyPath.Player.Rate, context: nil)
-        self.player.removeObserver(self, forKeyPath: KeyPath.Player.Status, context: nil)
-        self.player.removeObserver(self, forKeyPath: KeyPath.Player.TimeControlStatus, context: nil)
+        self.player.removeObserver(self, forKeyPath: RegularPlayerKeyPath.Player.Rate, context: nil)
+        self.player.removeObserver(self, forKeyPath: RegularPlayerKeyPath.Player.Status, context: nil)
+        self.player.removeObserver(self, forKeyPath: RegularPlayerKeyPath.Player.TimeControlStatus, context: nil)
         
         if let playerTimeObserver = self.playerTimeObserver
         {
@@ -143,21 +76,21 @@ extension RegularPlayer {
             
             // Player Observers
             
-            if keyPath == KeyPath.Player.Rate
+            if keyPath == RegularPlayerKeyPath.Player.Rate
             {
                 if let rate = change?[.newKey] as? Float
                 {
                     self.playerRateDidChange(rate: rate)
                 }
             }
-            else if keyPath == KeyPath.Player.Status
+            else if keyPath == RegularPlayerKeyPath.Player.Status
             {
                 if let statusInt = change?[.newKey] as? Int, let status = AVPlayerStatus(rawValue: statusInt)
                 {
                     self.playerStatusDidChange(status: status)
                 }
             }
-            else if keyPath == KeyPath.Player.TimeControlStatus
+            else if keyPath == RegularPlayerKeyPath.Player.TimeControlStatus
             {
                 if let statusInt = change?[.newKey] as? Int, let status = AVPlayerTimeControlStatus(rawValue: statusInt)
                 {
@@ -166,28 +99,28 @@ extension RegularPlayer {
             }
         }else if let _: AVPlayerItem = object as? AVPlayerItem {
             
-            if keyPath == KeyPath.PlayerItem.Status
+            if keyPath == RegularPlayerKeyPath.PlayerItem.Status
             {
                 if let statusInt = change?[.newKey] as? Int, let status = AVPlayerItemStatus(rawValue: statusInt)
                 {
                     self.playerItemStatusDidChange(status: status)
                 }
             }
-            else if keyPath == KeyPath.PlayerItem.PlaybackLikelyToKeepUp
+            else if keyPath == RegularPlayerKeyPath.PlayerItem.PlaybackLikelyToKeepUp
             {
                 if let playbackLikelyToKeepUp = change?[.newKey] as? Bool
                 {
                     self.playerItemPlaybackLikelyToKeepUpDidChange(playbackLikelyToKeepUp: playbackLikelyToKeepUp)
                 }
             }
-            else if keyPath == KeyPath.PlayerItem.LoadedTimeRanges
+            else if keyPath == RegularPlayerKeyPath.PlayerItem.LoadedTimeRanges
             {
                 if let loadedTimeRanges = change?[.newKey] as? [NSValue]
                 {
                     self.playerItemLoadedTimeRangesDidChange(loadedTimeRanges: loadedTimeRanges)
                 }
             }
-            else if keyPath == KeyPath.PlayerItem.PlaybackBufferEmpty
+            else if keyPath == RegularPlayerKeyPath.PlayerItem.PlaybackBufferEmpty
             {
                 if let playbackBufferEmpty = change?[.newKey] as? Bool
                 {
@@ -226,6 +159,8 @@ extension RegularPlayer {
     
     private func playerStatusDidChange(status: AVPlayerStatus)
     {
+        // not accurate
+        /*
         switch status
         {
         case .unknown:
@@ -239,7 +174,58 @@ extension RegularPlayer {
         case .failed:
             
             self.state = .failed
+        }*/
+    }
+    
+    @objc func newErrorLogEntry(notification: Notification) {
+        guard let object = notification.object, let playerItem = object as? AVPlayerItem else { return }
+        
+        guard let errorLog: AVPlayerItemErrorLog = playerItem.errorLog() else { return }
+        
+        //nslog("newErrorLogEntry Error: \(errorLog)")
+        
+        // If File Not Found(404) error, retry a few minutes ago
+        
+        if errorLog.description.contains("404") {
+            //nslog("404")
+            
+            self.state = .failed
         }
+    }
+    
+    @objc func failedToPlayToEndTime(notification: Notification) {
+        guard let userInfo = notification.userInfo, let error = userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error else { return }
+        
+        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
+        //nslog("failedToPlayToEndTime Error: \(error)")
+        
+        if error.localizedDescription.contains("404") {
+            //nslog("404")
+            
+            self.state = .failed
+        }
+    }
+    
+    @objc func playbackStalled(notification: Notification) {
+        guard let _ = notification.userInfo else { return }
+        
+        //nslog("playbackStalled notification: \(notification)")
+        
+        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
+        
+        guard let isPlaybackBufferEmpty = player.currentItem?.isPlaybackBufferEmpty else { return }
+        
+        self.state = isPlaybackBufferEmpty ? .empty : .loading
+    }
+    
+    @objc func playbackDidPlayToEndTime(notification: Notification) {
+        guard let _ = notification.userInfo else { return }
+        
+        //nslog("playbackDidPlayToEndTime notification: \(notification)")
+        
+        //let error: NSError = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as! NSError
+        
+        self.state = .ready
     }
     
     private func playerTimeControlStatusDidChange(status: AVPlayerTimeControlStatus)
@@ -248,6 +234,8 @@ extension RegularPlayer {
         
         if self.player.timeControlStatus == .playing {
             
+            self.state = .ready
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
                 guard let strongSelf = self else { return }
                 
@@ -256,6 +244,9 @@ extension RegularPlayer {
                     strongSelf.player.currentItem?.preferredPeakBitRate = 1024 * 1024 * 4
                 }
             })
+        }else if self.player.timeControlStatus == .waitingToPlayAtSpecifiedRate {
+            // Not accurate
+            //self.state = .loading
         }
     }
     

@@ -39,7 +39,7 @@ class ViewController: UIViewController {
          lives.media = [LiveModel]()
         
         let liveList1: LiveModel = LiveModel()
-        liveList1.media_url = "https://wowzaprod115-i.akamaihd.net/hls/live/689329/d8c1d4a9/playlist.m3u8"
+        liveList1.media_url = "https://wowzaprod115-i.akamaihd.net/hls/live/689413/773d2643/playlist.m3u8"
         liveList1.subject = "First"
         
         lives.media?.append(liveList1)

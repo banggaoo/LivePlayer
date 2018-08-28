@@ -15,11 +15,7 @@ import CoreMedia
 /// A RegularPlayer is used to play regular videos.
 @objc open class RegularPlayer: NSObject, Player, ProvidesView
 {
-    public struct Constants
-    {
-        public static let TimeUpdateInterval: TimeInterval = 1.0
-    }
-    
+   
     // MARK: Private Properties
     
     public var player = AVPlayer()
@@ -186,7 +182,7 @@ import CoreMedia
         
         userWantToPlay = true
         
-        timer = Timer(timeInterval: 2.0, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
+        timer = Timer(timeInterval: RegularPlayerConstants.TimerInterval, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
    
         player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)

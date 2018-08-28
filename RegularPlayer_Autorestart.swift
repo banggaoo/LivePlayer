@@ -15,33 +15,39 @@ extension RegularPlayer {
         
         if userWantToPlay {
             
-            if state == .ready {
+            switch state {
+                
+            case .empty:  // Might network fail. if live streaming, chunk might created yet
+                // Wait and try play
+                
+                // If live streaming chunk exist, will play chunk
+                autoRestartCount += Int(timer.timeInterval)
+
+            case .loading:  // loading or nework is slow
+                // Wait
+                break
+                
+            case .ready:  // normal
                 autoRestartCount = 0
                 
-            }else if state == .loading{
-                autoRestartCount += 1
+            case .failed:  // fail to play or file not found 404
                 
-            }else if state == .failed{
-                autoRestartCount += 1
+                autoRestartCount += (Int(timer.timeInterval) * 100)
                 
-                if autoRestartCount > 5 {
-                    //nslog("autoRestartCount > 5")
-                    // cannot catch if video loading is quite long
-                    
-                    autoRestartCount = 1
-                    
-                    guard let asset: AVAsset = self.player.currentItem?.asset else { return }
-                    
-                    set(asset)
-                    return
-                }
+            default:  // unknown
+                break
             }
             
-            if autoRestartCount > 0 {
-                //nslog("autoRestartCount > 0")
+            if autoRestartCount >= Int(RegularPlayerConstants.AssetLoadTimeout * 100.0) {  // try to reload
+                guard let asset: AVAsset = self.player.currentItem?.asset else { return }
                 
-                play()
+                self.set(asset)
+                self.player.play()
+
+            }else if autoRestartCount > Int(RegularPlayerConstants.AssetPlayTimeout) {  // try to play
+                
+                self.player.play()
             }
         }
-    }
+    } 
 }

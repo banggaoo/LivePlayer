@@ -16,7 +16,7 @@ class LivesModel: Codable {
         var model = LivesModel()
         do {
             model = try JSONDecoder().decode(LivesModel.self, from: jsonString.data(using: .utf8)!)
-        } catch let _ {
+        } catch {
             //print("Parsing Error \(error)")
             return nil
         }
