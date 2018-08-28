@@ -9,6 +9,7 @@
 import UIKit
 
 public protocol InfinitePageViewDelegate: class {
+    func canChange(isDown: Bool) -> Bool
     func willChange(isDown: Bool, newViewController: UIViewController)
     func didChange(isDown: Bool, newViewController: UIViewController)
 }
@@ -27,31 +28,34 @@ public class InfinitePageViewController: UIPageViewController {
 
         setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
     }
+    
+    func setScrollEnable(_ isEnabled: Bool) {
+        
+        for view in view.subviews {
+            if let subView = view as? UIScrollView {
+                subView.isScrollEnabled = isEnabled
+            }
+        }
+    }
 }
 
 extension InfinitePageViewController: UIPageViewControllerDelegate {
 
     private func getDirection(currentViewController: UIViewController, newViewController: UIViewController) -> Bool {
-
         guard let currentIndex = controllers?.index(of: currentViewController) else { return false }
         guard let newIndex = controllers?.index(of: newViewController) else { return false }
 
-        var result: Bool = false
-
-        if currentIndex < newIndex {
-            result = true
-        }
+        var isDown: Bool = currentIndex < newIndex ? true : false
 
         if abs(currentIndex - newIndex) == ((controllers?.count)! - 1) {
             // If pages are reversed, reverse direction
-            result = !result
+            isDown = !isDown
         }
-
-        return result
+        
+        return isDown
     }
 
     public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-
         guard let newViewController: UIViewController = pendingViewControllers.first, let currentViewController: UIViewController = pageViewController.viewControllers?.first else { return }
 
         let isDown = getDirection(currentViewController: currentViewController, newViewController: newViewController)
@@ -60,8 +64,7 @@ extension InfinitePageViewController: UIPageViewControllerDelegate {
     }
 
     public func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-
-        if !completed { return }
+        guard completed else { return }
 
         guard let currentViewController: UIViewController = previousViewControllers.first, let newViewController: UIViewController = pageViewController.viewControllers?.first else { return }
 
@@ -74,11 +77,14 @@ extension InfinitePageViewController: UIPageViewControllerDelegate {
 extension InfinitePageViewController: UIPageViewControllerDataSource {
 
     public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
         guard let index = controllers?.index(of: viewController) else { return nil }
 
+        if let isCanChange: Bool = scrollDelegate?.canChange(isDown: false), isCanChange == false {
+            return nil
+        }
+
         if index == 0 {
-            return controllers?[(controllers?.count)!-1]
+            return controllers?.last
         }
 
         let previousIndex = index - 1

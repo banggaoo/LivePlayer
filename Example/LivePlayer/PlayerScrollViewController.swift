@@ -16,11 +16,16 @@ class PlayerScrollViewController: UIViewController, PlayerViewDelegate {
 
     var viewControllers: [PlayerViewController] = [PlayerViewController]()
 
+    let numberOfPlayers = 5
+
+    var currentIndex: Int = 0
+
+    public var isInfinite = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Depend on device's performance
-        let numberOfPlayers = 5
 
         for _ in 0...(numberOfPlayers - 1) {
 
@@ -45,20 +50,34 @@ class PlayerScrollViewController: UIViewController, PlayerViewDelegate {
 
         guard let currentViewController: PlayerViewController = infinitePageViewController.viewControllers?.first as? PlayerViewController else { return }
 
-        placePlayers(index: viewModel.index, viewController: currentViewController)
+        placePlayers(index: currentIndex, viewController: currentViewController)
+        
+        updatePlayer(currentViewController)
     }
 
     func placePlayers(index: Int, viewController: UIViewController) {
-
-        guard let currentLive = viewModel.list?[index], let videoString = currentLive.media_url, let videoURL = URL(string: videoString) else { return }
-
         guard let viewController: PlayerViewController = viewController as? PlayerViewController else { return }
+
+        guard (viewModel.list?.count)! > index else {
+            
+            viewController.emptyPlayer()
+            return
+        }
+        
+        guard let currentLive = viewModel.list?[index], let videoString = currentLive.media_url, let videoURL = URL(string: videoString) else { return }
 
         viewController.videoURL = videoURL
         
-        viewController.loadVideo()
+        viewController.setup()
     }
 
+    func updatePlayer(_ viewController: UIViewController) {
+        
+        guard let viewController: PlayerViewController = viewController as? PlayerViewController else { return }
+        
+        viewController.loadVideo()
+    }
+    
     @objc func didTapExitButton() {
 
         self.dismiss(animated: true, completion: nil)
@@ -73,7 +92,7 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
 
     func getNextIndex(offset: Int) -> Int {
 
-        var nextIndex = viewModel.index + offset
+        var nextIndex = currentIndex + offset
 
         // If reach end of list, Reverse
         nextIndex = viewModel.list!.reverseOverflow(nextIndex)
@@ -86,6 +105,22 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
         let offset = isDown ? 1 : -1
 
         return getNextIndex(offset: offset)
+    }
+
+    func isIndexOverflowed(isDown: Bool) -> Bool {
+        
+        let nextIndex = getNextIndex(isDown: isDown)
+        
+        // Check is reversed
+        if isDown == true, currentIndex > nextIndex {
+            
+            return true
+            
+        } else if isDown == false, currentIndex < nextIndex {
+            
+            return true
+        }
+        return false
     }
 
     func getViewController(baseIndex: Int, offset: Int) -> UIViewController {
@@ -105,9 +140,18 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
 
         guard let newViewController: PlayerViewController = getViewController(baseIndex: baseIndex, offset: offset) as? PlayerViewController else { return }
         
+        placePlayers(index: newIndex, viewController: newViewController)
+        
         guard newViewController.isPreload else { return }
         
-        placePlayers(index: newIndex, viewController: newViewController)
+        updatePlayer(newViewController)
+    }
+    
+    func canChange(isDown: Bool) -> Bool {
+        
+        if isInfinite { return true }
+        
+        return !isIndexOverflowed(isDown: isDown)
     }
 
     func willChange(isDown: Bool, newViewController: UIViewController) {
@@ -117,13 +161,15 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
         print("willChange \(nextIndex)")
 
         placePlayers(index: nextIndex, viewController: newViewController)
+        
+        updatePlayer(newViewController)
     }
 
     func didChange(isDown: Bool, newViewController: UIViewController) {
 
         let newIndex = getNextIndex(isDown: isDown)
 
-        viewModel.index = newIndex
+        currentIndex = newIndex
 
         print("didChange \(newIndex)")
 

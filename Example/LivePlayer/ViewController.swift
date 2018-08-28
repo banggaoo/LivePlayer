@@ -39,25 +39,25 @@ class ViewController: UIViewController {
          lives.media = [LiveModel]()
         
         let liveList1: LiveModel = LiveModel()
-        liveList1.media_url = "https://wowzaprod115-i.akamaihd.net/hls/live/689329/9d5dee97/playlist.m3u8"
+        liveList1.media_url = "https://wowzaprod115-i.akamaihd.net/hls/live/689329/d8c1d4a9/playlist.m3u8"
         liveList1.subject = "First"
         
         lives.media?.append(liveList1)
         
         let liveList2: LiveModel = LiveModel()
-        liveList2.media_url = "https://wowzaprod114-i.akamaihd.net/hls/live/678947/c10a05e8/playlist.m3u8"
+        liveList2.media_url = "https://c2c-gdny-media-live.conects.com/transcoder_1972855/2196398_7bc307ad.0.mp4"
         liveList2.subject = "Second"
         
         lives.media?.append(liveList2)
         
         let liveList3: LiveModel = LiveModel()
-        liveList3.media_url = "https://c2c-gdny-media-live.conects.com/transcoder_1930310/2152314_5bef8309.0.mp4"
+        liveList3.media_url = "https://c2c-gdny-media-live.conects.com/transcoder_1970375/2194422_c96e7048.0.mp4"
         liveList3.subject = "Third"
         
         lives.media?.append(liveList3)
         
         let liveList4: LiveModel = LiveModel()
-        liveList4.media_url = "https://c2c-gdny-media-live.conects.com/transcoder_1923977/2145608_6e93916f.0.mp4"
+        liveList4.media_url = "https://c2c-gdny-media-live.conects.com/transcoder_1970005/2193997_6f846099.0.mp4"
         liveList4.subject = "Fourth"
         
         lives.media?.append(liveList4)
@@ -77,11 +77,11 @@ class ViewController: UIViewController {
         let playerScrollViewController = UIStoryboard(name: "Player", bundle: nil).instantiateViewController(withIdentifier: "PlayerScrollViewController") as! PlayerScrollViewController
         
         playerScrollViewController.viewModel.list = lives.media
-        playerScrollViewController.viewModel.index = 0
+        playerScrollViewController.currentIndex = 0
         
         self.present(playerScrollViewController, animated: true, completion: nil)
     }
- 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

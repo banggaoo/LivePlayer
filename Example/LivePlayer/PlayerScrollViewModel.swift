@@ -11,5 +11,4 @@ import Foundation
 class PlayerScrollViewModel: NSObject {
 
     var list: [LiveModel]?
-    var index: Int = 0
 }

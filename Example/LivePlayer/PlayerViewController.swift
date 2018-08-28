@@ -38,25 +38,25 @@ class PlayerViewController: UIViewController, PlayerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        setup()
+        setupPlayer()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        self.player.start()
+        //self.player.player.playImmediately(atRate: 1.0)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        self.player.start()
-        //self.player.player.playImmediately(atRate: 1.0)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if !isPreload {
+        if isPreload == false {
             
             videoURL = nil
             loadVideo()
@@ -71,8 +71,17 @@ class PlayerViewController: UIViewController, PlayerDelegate {
     }
 
     // MARK: Setup
+    
+    public func setup() {
+        
+        guard let _ = videoURL else {
+            
+            emptyPlayer()
+            return
+        }
+    }
 
-    private func setup() {
+    public func setupPlayer() {
 
         player.delegate = self
         player.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -84,12 +93,34 @@ class PlayerViewController: UIViewController, PlayerDelegate {
         
         if let videoURL = videoURL {
             
-            self.player.set(AVURLAsset(url: videoURL))
+            var isNeedUpdate = false
+            if let asset = self.player.player.currentItem?.asset, let urlAsset = asset as? AVURLAsset {
+                
+                if videoURL.absoluteString != urlAsset.url.absoluteString {
+                    
+                    isNeedUpdate = true
+                }
+            } else {
+                
+                isNeedUpdate = true
+            }
+            
+            if isNeedUpdate {
+                
+                self.player.set(AVURLAsset(url: videoURL))
+            }
 
         }else{
             
             self.player.set(nil)
         }
+    }
+
+    func emptyPlayer() {
+        
+        videoURL = nil
+        
+        loadVideo()
     }
 
     // MARK: Actions
