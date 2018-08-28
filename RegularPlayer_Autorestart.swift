@@ -38,13 +38,13 @@ extension RegularPlayer {
                 break
             }
             
-            if autoRestartCount >= Int(RegularPlayerConstants.AssetLoadTimeout * 100.0) {  // try to reload
+            if autoRestartCount >= Int(assetLoadTimeout * 100.0) {  // try to reload
                 guard let asset: AVAsset = self.player.currentItem?.asset else { return }
                 
                 self.set(asset)
                 self.player.play()
 
-            }else if autoRestartCount > Int(RegularPlayerConstants.AssetPlayTimeout) {  // try to play
+            }else if autoRestartCount > Int(assetPlayTimeout) {  // try to play
                 
                 self.player.play()
             }

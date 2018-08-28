@@ -42,7 +42,7 @@ extension RegularPlayer {
         self.player.addObserver(self, forKeyPath: RegularPlayerKeyPath.Player.Status, options: [.initial, .new], context: nil)
         self.player.addObserver(self, forKeyPath: RegularPlayerKeyPath.Player.TimeControlStatus, options: [.initial, .new], context: nil)
         
-        self.playerTimeObserver = self.player.addPeriodicTimeObserver(forInterval: getSeekTime(to: RegularPlayerConstants.TimeUpdateInterval), queue: DispatchQueue.main, using: { [weak self] (cmTime) in
+        self.playerTimeObserver = self.player.addPeriodicTimeObserver(forInterval: getSeekTime(to: timeUpdateInterval), queue: DispatchQueue.main, using: { [weak self] (cmTime) in
             
             if let strongSelf = self, let time = cmTime.timeInterval
             {
