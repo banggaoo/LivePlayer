@@ -44,17 +44,23 @@ class PlayerViewController: UIViewController, PlayerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.player.start()
-        //self.player.player.playImmediately(atRate: 1.0)
+        self.loadVideo()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        self.player.prepare()
+        self.player.player.playImmediately(atRate: 1.0)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
         if isPreload == false {
             
@@ -63,11 +69,6 @@ class PlayerViewController: UIViewController, PlayerDelegate {
         }
         
         self.player.stop()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
     }
 
     // MARK: Setup
@@ -153,6 +154,7 @@ class PlayerViewController: UIViewController, PlayerDelegate {
     // MARK: VideoPlayerDelegate
 
     func playerDidUpdateState(player: Player, previousState: PlayerState) {
+        NSLog("playerDidUpdateState \(player.state)")
         self.activityIndicator.isHidden = true
 
         switch player.state {
@@ -160,13 +162,13 @@ class PlayerViewController: UIViewController, PlayerDelegate {
 
             self.activityIndicator.isHidden = false
 
-        case .ready:
-
-            break
-
         case .failed:
 
-            NSLog("🚫 \(String(describing: player.error))")
+            //nslog("🚫 \(String(describing: player.error))")
+            break
+            
+        default:
+            break
         }
     }
 

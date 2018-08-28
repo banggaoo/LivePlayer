@@ -40,15 +40,17 @@ public enum PlayerError: Int
 /// - loading: The player is loading or buffering
 /// - ready: The player is ready for playback
 /// - failed: The player has failed
-@objc public enum PlayerState: Int
+ public enum PlayerState: String
 {
-    case loading
-    case ready
-    case failed
+    case unknown = "unknown"
+    case empty = "empty"
+    case loading = "loading"
+    case ready = "ready"
+    case failed = "failed"
 }
 
 /// An object that adopts the PlayerDelegate protocol can receive updates from the player.
-@objc public protocol PlayerDelegate: class
+ public protocol PlayerDelegate: class
 {
     func playerDidUpdateState(player: Player, previousState: PlayerState)
     func playerDidUpdatePlaying(player: Player)
@@ -57,9 +59,9 @@ public enum PlayerError: Int
 }
 
 /// An object that adopts the Player protocol is responsible for implementing the API and calling PlayerDelegate methods where appropriate.
-@objc public protocol Player: class
+ public protocol Player: class
 {
-    weak var delegate: PlayerDelegate? { get set }
+    var delegate: PlayerDelegate? { get set }
     
     var state: PlayerState { get }
     
