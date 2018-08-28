@@ -158,7 +158,7 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
 
         let nextIndex = getNextIndex(isDown: isDown)
 
-        print("willChange \(nextIndex)")
+        //print("willChange \(nextIndex)")
 
         placePlayers(index: nextIndex, viewController: newViewController)
         
@@ -171,7 +171,7 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
 
         currentIndex = newIndex
 
-        print("didChange \(newIndex)")
+        //print("didChange \(newIndex)")
 
         // Preload player
         loadPlayer(offset: -1, base: newViewController)
