@@ -31,9 +31,7 @@ extension RegularPlayer {
                 break
                 
             case .ready:  // normal
-                autoRestartFailedCount = 0
-                autoRestartEmptyCount = 0
-                autoRestartLoadCount = 0
+                resetAllAutoRestartCount()
                 
             case .failed:  // fail to play or file not found 404
                 
@@ -44,6 +42,9 @@ extension RegularPlayer {
             }
             
             if autoRestartFailedCount > Int(assetFailedReloadTimeout) || autoRestartEmptyCount > Int(assetEmptyReloadTimeout) || autoRestartLoadCount > Int(assetLoadingReloadTimeout) {  // try to reload
+                
+                resetAllAutoRestartCount()
+
                 guard let asset: AVAsset = self.player.currentItem?.asset else { return }
                 
                 self.set(asset)
@@ -51,10 +52,19 @@ extension RegularPlayer {
                 
             }else if autoRestartEmptyCount > Int(assetEmptyTimeout) || autoRestartLoadCount > Int(assetLoadingTimeout) {  // try to play
                 
+                resetAllAutoRestartCount()
+
                 if self.player.timeControlStatus != .playing {
                     self.player.play()
                 }
             }
         }
+    }
+    
+    func resetAllAutoRestartCount() {
+        
+        autoRestartFailedCount = 0
+        autoRestartEmptyCount = 0
+        autoRestartLoadCount = 0
     }
 }
