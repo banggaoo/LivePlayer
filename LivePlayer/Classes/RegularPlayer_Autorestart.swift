@@ -8,10 +8,6 @@
 import Foundation
 import AVFoundation
 
-let LoadingCountDigit = 1
-let EmptyCountDigit = 100
-let FailedCountDigit = 1000
-
 extension RegularPlayer {
     
     @objc func on(timer: Timer) {
@@ -25,39 +21,41 @@ extension RegularPlayer {
                 // Wait and try play
                 
                 // If live streaming chunk exist, will play chunk
-                autoRestartCount += (Int(timer.timeInterval) * EmptyCountDigit)
+                autoRestartEmptyCount += Int(timer.timeInterval)
 
             case .loading:  // loading or network is slow
                 // Wait
                 // couldnt play after reconnect live
                 
-                autoRestartCount += (Int(timer.timeInterval) * LoadingCountDigit)
+                autoRestartLoadCount += Int(timer.timeInterval)
                 break
                 
             case .ready:  // normal
-                autoRestartCount = 0
-                
+                autoRestartFailedCount = 0
+                autoRestartEmptyCount = 0
+                autoRestartLoadCount = 0
+
             case .failed:  // fail to play or file not found 404
                 
-                autoRestartCount += (Int(timer.timeInterval) * FailedCountDigit)
+                autoRestartFailedCount += Int(timer.timeInterval)
                 
             default:  // unknown
                 break
             }
             
-            if autoRestartCount >= Int(assetLoadTimeout) * FailedCountDigit {  // try to reload
+            if autoRestartFailedCount > Int(assetFailedTimeout) {  // try to reload
                 guard let asset: AVAsset = self.player.currentItem?.asset else { return }
                 
                 self.set(asset)
                 self.player.play()
 
-            }else if autoRestartCount >= Int(assetEmptyTimeout) * EmptyCountDigit {  // try to play
+            }else if autoRestartEmptyCount > Int(assetEmptyTimeout) {  // try to play
 
                 if self.player.timeControlStatus != .playing {
                     self.player.play()
                 }
 
-            }else if autoRestartCount >= Int(assetPlayTimeout) * LoadingCountDigit {  // try to play
+            }else if autoRestartLoadCount > Int(assetLoadTimeout)  {  // try to play
                 
                 if self.player.timeControlStatus != .playing {
                     self.player.play()
