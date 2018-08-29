@@ -22,7 +22,7 @@ extension RegularPlayer {
                 
                 // If live streaming chunk exist, will play chunk
                 autoRestartEmptyCount += Int(timer.timeInterval)
-
+                
             case .loading:  // loading or network is slow
                 // Wait
                 // couldnt play after reconnect live
@@ -34,7 +34,7 @@ extension RegularPlayer {
                 autoRestartFailedCount = 0
                 autoRestartEmptyCount = 0
                 autoRestartLoadCount = 0
-
+                
             case .failed:  // fail to play or file not found 404
                 
                 autoRestartFailedCount += Int(timer.timeInterval)
@@ -43,24 +43,18 @@ extension RegularPlayer {
                 break
             }
             
-            if autoRestartFailedCount > Int(assetFailedTimeout) {  // try to reload
+            if autoRestartFailedCount > Int(assetFailedReloadTimeout) || autoRestartEmptyCount > Int(assetEmptyReloadTimeout) || autoRestartLoadCount > Int(assetLoadingReloadTimeout) {  // try to reload
                 guard let asset: AVAsset = self.player.currentItem?.asset else { return }
                 
                 self.set(asset)
                 self.player.play()
-
-            }else if autoRestartEmptyCount > Int(assetEmptyTimeout) {  // try to play
-
-                if self.player.timeControlStatus != .playing {
-                    self.player.play()
-                }
-
-            }else if autoRestartLoadCount > Int(assetLoadTimeout)  {  // try to play
+                
+            }else if autoRestartEmptyCount > Int(assetEmptyTimeout) || autoRestartLoadCount > Int(assetLoadingTimeout) {  // try to play
                 
                 if self.player.timeControlStatus != .playing {
                     self.player.play()
                 }
             }
         }
-    } 
+    }
 }

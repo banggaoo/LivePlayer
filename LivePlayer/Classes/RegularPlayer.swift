@@ -15,11 +15,11 @@ import CoreMedia
 /// A RegularPlayer is used to play regular videos.
 @objc open class RegularPlayer: NSObject, Player, ProvidesView
 {
-   
+    
     // MARK: Private Properties
     
     public var player = AVPlayer()
-        
+    
     // MARK: Public API
     
     /// Sets an AVAsset on the player.
@@ -47,7 +47,7 @@ import CoreMedia
             self.player.currentItem?.preferredPeakBitRate = 1000.0
             self.player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
             self.player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
-
+            
         }else{
             
             self.player.replaceCurrentItem(with: nil)
@@ -147,10 +147,13 @@ import CoreMedia
     
     public var timeUpdateInterval: TimeInterval = 1.0
     public var timerInterval: TimeInterval = 3.0
-    public var assetLoadTimeout: TimeInterval = 8.0
-    public var assetEmptyTimeout: TimeInterval = 6.0
-    public var assetFailedTimeout: TimeInterval = 5.0
-
+    
+    public var assetFailedReloadTimeout: TimeInterval = 10.0
+    public var assetEmptyTimeout: TimeInterval = 5.0
+    public var assetEmptyReloadTimeout: TimeInterval = 10.0
+    public var assetLoadingTimeout: TimeInterval = 5.0
+    public var assetLoadingReloadTimeout: TimeInterval = 10.0
+    
     public func seek(to time: TimeInterval) {
         guard refreshFlag else { return }
         refreshFlag = false
@@ -158,7 +161,7 @@ import CoreMedia
         self.player.seek(to: getSeekTime(to: time), completionHandler: { [weak self] (isFinished: Bool) -> Void in
             
             if isFinished {
-            
+                
                 self?.refreshFlag = true
                 
                 self?.time = time
@@ -171,15 +174,15 @@ import CoreMedia
     public func forceSeek(to time: TimeInterval) {
         
         self.player.seek(to: getSeekTime(to: time), toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
-
+        
         self.time = time
     }
     
     var userWantToPlay = false
-
+    
     public func start() {
         guard userWantToPlay == false else { return }
-    
+        
         prepare()
         play()
     }
@@ -189,24 +192,24 @@ import CoreMedia
         userWantToPlay = true
         
         timer = Timer(timeInterval: timerInterval, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
-   
+        
         player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
     }
-
+    
     public func play() {
         
         player.play()
     }
     
     public func pause() {
-
+        
         player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
         player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
-
+        
         player.currentItem?.cancelPendingSeeks()
         player.currentItem?.asset.cancelLoading()
-
+        
         player.pause()
     }
     
@@ -215,7 +218,7 @@ import CoreMedia
         userWantToPlay = false
         
         timer = nil
-
+        
         pause()
     }
     
@@ -238,7 +241,7 @@ import CoreMedia
     deinit
     {
         timer = nil
-
+        
         if let playerItem = self.player.currentItem
         {
             self.removePlayerItemObservers(fromPlayerItem: playerItem)
@@ -263,15 +266,15 @@ import CoreMedia
     }
     
     // MARK: Observers
-
+    
     var playerTimeObserver: Any?
-
+    
     // MARK: Autrestart
     
     var autoRestartLoadCount: Int = 0
     var autoRestartEmptyCount: Int = 0
     var autoRestartFailedCount: Int = 0
-
+    
     // MARK: Capability Protocol Helpers
     
     #if os(iOS)
