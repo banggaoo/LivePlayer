@@ -112,7 +112,7 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
         let nextIndex = getNextIndex(isDown: isDown)
         
         // Check is reversed
-        if isDown == true, currentIndex > nextIndex {
+        if isDown == true, currentIndex > nextIndex || isDown == false, currentIndex < nextIndex {
             
             return true
             

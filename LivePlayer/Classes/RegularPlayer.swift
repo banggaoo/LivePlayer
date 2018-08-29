@@ -147,7 +147,8 @@ import CoreMedia
     
     public var timeUpdateInterval: TimeInterval = 1.0
     public var timerInterval: TimeInterval = 3.0
-    public var assetLoadTimeout: TimeInterval = 6.0
+    public var assetLoadTimeout: TimeInterval = 8.0
+    public var assetEmptyTimeout: TimeInterval = 6.0
     public var assetPlayTimeout: TimeInterval = 5.0
 
     public func seek(to time: TimeInterval) {
