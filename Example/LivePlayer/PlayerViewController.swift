@@ -50,7 +50,7 @@ class PlayerViewController: UIViewController, PlayerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        self.player.prepare()
+        self.player.readyToPlay()
         self.player.player.playImmediately(atRate: 1.0)
     }
 

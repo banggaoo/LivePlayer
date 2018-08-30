@@ -182,14 +182,20 @@ import CoreMedia
     
     public func start() {
         guard userWantToPlay == false else { return }
+        userWantToPlay = true
         
-        prepare()
+        prepareToPlay()
         play()
     }
     
-    public func prepare() {
-        
+    public func readyToPlay() {
+        guard userWantToPlay == false else { return }
         userWantToPlay = true
+        
+        prepareToPlay()
+    }
+    
+    func prepareToPlay() {
         
         timer = Timer(timeInterval: timerInterval, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
         
@@ -204,12 +210,6 @@ import CoreMedia
     
     public func pause() {
         
-        player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
-        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
-        
-        player.currentItem?.cancelPendingSeeks()
-        player.currentItem?.asset.cancelLoading()
-        
         player.pause()
     }
     
@@ -217,11 +217,29 @@ import CoreMedia
         guard userWantToPlay == true else { return }
         userWantToPlay = false
         
-        timer = nil
+        prepareToStop()
         
         pause()
     }
     
+    func prepareToStop() {
+        
+        timer = nil
+        
+        player.currentItem?.preferredForwardBufferDuration = TimeInterval(1)
+        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = false
+        
+        player.currentItem?.cancelPendingSeeks()
+        player.currentItem?.asset.cancelLoading()
+    }
+    
+    public func rewindIfNeeds() {
+        
+        if self.time == self.duration {
+            
+            self.forceSeek(to: TimeInterval(0))
+        }
+    }
     
     // MARK: Lifecycle
     
