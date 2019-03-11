@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         
         playerViewController.delegate = self
 
-        playerViewController.videoURL = URL(string: "https://wowzaprod179-i.akamaihd.net/hls/live/678082/1b11010a/playlist.m3u8")!
+        playerViewController.videoURL = URL(string: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8")!
         
         self.present(playerViewController, animated: true, completion: nil)
     }
@@ -39,13 +39,13 @@ class ViewController: UIViewController {
          lives.media = [LiveModel]()
         
         let liveList1: LiveModel = LiveModel()
-        liveList1.media_url = "https://wowzaprod115-i.akamaihd.net/hls/live/689329/1cc623b6/playlist.m3u8"
+        liveList1.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
         liveList1.subject = "First"
         
         lives.media?.append(liveList1)
         
         let liveList2: LiveModel = LiveModel()
-        liveList2.media_url = "https://c2c-gdny-media-live.conects.com/transcoder_1972855/2196398_7bc307ad.0.mp4"
+        liveList2.media_url = "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
         liveList2.subject = "Second"
         
         lives.media?.append(liveList2)
@@ -85,8 +85,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient,
-                                                         mode: AVAudioSessionModeMoviePlayback,
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient,
+                                                         mode: AVAudioSession.Mode.moviePlayback,
                                                          options: [.mixWithOthers])
     }
     

@@ -131,7 +131,7 @@ import CoreMedia
     
     func getSeekTime(to time: TimeInterval) -> CMTime
     {
-        return CMTimeMakeWithSeconds(time, Int32(NSEC_PER_SEC))
+        return CMTimeMakeWithSeconds(time, preferredTimescale: Int32(NSEC_PER_SEC))
     }
     
     private var refreshFlag: Bool = true
@@ -140,7 +140,7 @@ import CoreMedia
         didSet {
             oldValue?.invalidate()
             if let timer: Timer = timer {
-                RunLoop.main.add(timer, forMode: .commonModes)
+                RunLoop.main.add(timer, forMode: .common)
             }
         }
     }
@@ -173,7 +173,7 @@ import CoreMedia
     
     public func forceSeek(to time: TimeInterval) {
         
-        self.player.seek(to: getSeekTime(to: time), toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        self.player.seek(to: getSeekTime(to: time), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         
         self.time = time
     }

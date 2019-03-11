@@ -44,9 +44,9 @@ class PlayerScrollViewController: UIViewController, PlayerViewDelegate {
 
         infinitePageViewController.scrollDelegate = self
 
-        addChildViewController(infinitePageViewController)
+        addChild(infinitePageViewController)
         view.addSubview(infinitePageViewController.view)
-        infinitePageViewController.didMove(toParentViewController: self)
+        infinitePageViewController.didMove(toParent: self)
 
         guard let currentViewController: PlayerViewController = infinitePageViewController.viewControllers?.first as? PlayerViewController else { return }
 

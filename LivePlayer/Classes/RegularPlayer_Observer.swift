@@ -85,14 +85,14 @@ extension RegularPlayer {
             }
             else if keyPath == RegularPlayerKeyPath.Player.Status
             {
-                if let statusInt = change?[.newKey] as? Int, let status = AVPlayerStatus(rawValue: statusInt)
+                if let statusInt = change?[.newKey] as? Int, let status = AVPlayer.Status(rawValue: statusInt)
                 {
                     self.playerStatusDidChange(status: status)
                 }
             }
             else if keyPath == RegularPlayerKeyPath.Player.TimeControlStatus
             {
-                if let statusInt = change?[.newKey] as? Int, let status = AVPlayerTimeControlStatus(rawValue: statusInt)
+                if let statusInt = change?[.newKey] as? Int, let status = AVPlayer.TimeControlStatus(rawValue: statusInt)
                 {
                     self.playerTimeControlStatusDidChange(status: status)
                 }
@@ -101,7 +101,7 @@ extension RegularPlayer {
             
             if keyPath == RegularPlayerKeyPath.PlayerItem.Status
             {
-                if let statusInt = change?[.newKey] as? Int, let status = AVPlayerItemStatus(rawValue: statusInt)
+                if let statusInt = change?[.newKey] as? Int, let status = AVPlayerItem.Status(rawValue: statusInt)
                 {
                     self.playerItemStatusDidChange(status: status)
                 }
@@ -139,7 +139,7 @@ extension RegularPlayer {
     
     // MARK: Observation Helpers
     
-    private func playerItemStatusDidChange(status: AVPlayerItemStatus)
+    private func playerItemStatusDidChange(status: AVPlayerItem.Status)
     {
         switch status
         {
@@ -157,7 +157,7 @@ extension RegularPlayer {
         }
     }
     
-    private func playerStatusDidChange(status: AVPlayerStatus)
+    private func playerStatusDidChange(status: AVPlayer.Status)
     {
         // not accurate
         /*
@@ -228,7 +228,7 @@ extension RegularPlayer {
         self.state = .ready
     }
     
-    private func playerTimeControlStatusDidChange(status: AVPlayerTimeControlStatus)
+    private func playerTimeControlStatusDidChange(status: AVPlayer.TimeControlStatus)
     {
         self.delegate?.playerDidUpdatePlaying(player: self)
         
