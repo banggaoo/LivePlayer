@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LivePlayer'
-  s.version          = '0.3.6'
+  s.version          = '0.3.7'
   s.summary          = 'Live/VOD Player based AVPlayer.'
 
 # This description is used to generate tags and improve search results.
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'LivePlayer/Classes/**/*'
   
-  s.swift_version = '4.1'
+  s.swift_version = '4.2'
 
   # s.resource_bundles = {
   #   'LivePlayer' => ['LivePlayer/Assets/*.png']
