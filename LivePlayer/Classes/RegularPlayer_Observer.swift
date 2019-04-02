@@ -159,8 +159,8 @@ extension RegularPlayer {
     
     private func playerStatusDidChange(status: AVPlayer.Status)
     {
-        // not accurate
-        /*
+        // not accurate?
+        
         switch status
         {
         case .unknown:
@@ -174,7 +174,7 @@ extension RegularPlayer {
         case .failed:
             
             self.state = .failed
-        }*/
+        }
     }
     
     @objc func newErrorLogEntry(notification: Notification) {
