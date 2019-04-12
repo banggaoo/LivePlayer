@@ -239,17 +239,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 32CGS7WPDU;
+						DevelopmentTeam = B23RT9FP44;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 32CGS7WPDU;
+						DevelopmentTeam = B23RT9FP44;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -257,10 +257,9 @@
 			};
 			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "LivePlayer" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -508,7 +507,8 @@
 			baseConfigurationReference = 6CDC0FBA7D85B185C3D967FB /* Pods-LivePlayer_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 32CGS7WPDU;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = B23RT9FP44;
 				INFOPLIST_FILE = LivePlayer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -526,7 +526,7 @@
 			baseConfigurationReference = B5AFD8E245E4E4F3980A1DBB /* Pods-LivePlayer_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 32CGS7WPDU;
+				DEVELOPMENT_TEAM = B23RT9FP44;
 				INFOPLIST_FILE = LivePlayer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -543,7 +543,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 00528AA4834A23CEC40CE1A5 /* Pods-LivePlayer_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 32CGS7WPDU;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = B23RT9FP44;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -563,7 +564,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CB051895A11C7AB72593BC19 /* Pods-LivePlayer_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = 32CGS7WPDU;
+				DEVELOPMENT_TEAM = B23RT9FP44;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
