@@ -42,16 +42,12 @@ class PlayerViewController: BasePlayerViewController {
         super.viewDidLoad()
 
         insertPlayer()
+        
+        loadVideo()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        loadVideo()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
 
         player.start()
     }

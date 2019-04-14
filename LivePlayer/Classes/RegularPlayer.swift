@@ -118,15 +118,13 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     
     var userWantToPlay = false
     public func start() {
-        guard readyToPlay() == true else { return }
+        readyToPlay()
         play()
     }
     
-    public func readyToPlay() -> Bool {
+    public func readyToPlay() {
         userWantToPlay = true
-        
         prepareToPlay()
-        return true
     }
     
     private func prepareToPlay() {
