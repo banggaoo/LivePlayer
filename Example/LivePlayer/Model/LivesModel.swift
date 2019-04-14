@@ -13,14 +13,11 @@ class LivesModel: Codable {
     var media: [LiveModel]?
 
     static func decodeJsonData(jsonString: String) -> LivesModel? {
-        var model = LivesModel()
         do {
-            model = try JSONDecoder().decode(LivesModel.self, from: jsonString.data(using: .utf8)!)
+            return try JSONDecoder().decode(LivesModel.self, from: jsonString.data(using: .utf8)!)
         } catch {
-            //print("Parsing Error \(error)")
-            return nil
+            print("Parsing Error \(error)")
         }
-
-        return model
+        return nil
     }
 }

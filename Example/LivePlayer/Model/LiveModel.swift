@@ -21,4 +21,13 @@ class LiveModel: Codable {
     var bookmarks_count: Int?
     var media_type: String?
     //var live_channel: LiveChannelModel?
+    
+    static func decodeJsonData(jsonString: String) -> LiveModel? {
+        do {
+            return try JSONDecoder().decode(LiveModel.self, from: jsonString.data(using: .utf8)!)
+        } catch {
+            print("Parsing Error \(error)")
+        }
+        return nil
+    }
 }
