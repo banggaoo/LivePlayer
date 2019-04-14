@@ -9,21 +9,16 @@
 import Foundation
 import AVFoundation
 
-extension CMTime
-{
-    var timeInterval: TimeInterval?
-    {
-        if CMTIME_IS_INVALID(self) || CMTIME_IS_INDEFINITE(self)
-        {
+extension CMTime {
+    var timeInterval: TimeInterval? {
+        if CMTIME_IS_INVALID(self) || CMTIME_IS_INDEFINITE(self) {
             return nil
         }
-        
         return CMTimeGetSeconds(self)
     }
 }
 
-extension TimeInterval
-{
+extension TimeInterval {
     
     var milliseconds: Int {
         return Int((truncatingRemainder(dividingBy: 1)) * 1000)
@@ -41,12 +36,8 @@ extension TimeInterval
         return Int(self) / 3600
     }
     
-    func compareHourToSecond(interval: TimeInterval) -> Bool
-    {
-        if interval.seconds == self.seconds, interval.minutes == self.minutes, interval.hours == self.hours
-        {
-            return true
-        }
+    func compareHourToSecond(interval: TimeInterval) -> Bool {
+        if interval.seconds == seconds, interval.minutes == minutes, interval.hours == hours { return true }
         return false
     }
 }

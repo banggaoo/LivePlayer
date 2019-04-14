@@ -10,6 +10,12 @@ import UIKit
 import LivePlayer
 import AVFoundation
 
+#if DEBUG
+
+#else
+
+#endif
+
 class ViewController: UIViewController {
 
     @IBAction func singleButton(_ sender: Any) {

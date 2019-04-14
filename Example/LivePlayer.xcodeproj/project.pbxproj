@@ -25,6 +25,7 @@
 		70D22C2B226301BB009FFE9F /* BasePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2A226301BB009FFE9F /* BasePlayerViewController.swift */; };
 		70D22C2E226303BC009FFE9F /* RegularPlayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2D226303BC009FFE9F /* RegularPlayerExtension.swift */; };
 		70D22C302263067A009FFE9F /* NSObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2F2263067A009FFE9F /* NSObjectExtension.swift */; };
+		70D22C3722633A24009FFE9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C3622633A24009FFE9F /* Log.swift */; };
 		E215C61C76DF4FD485900124 /* Pods_LivePlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABF08F633F6CC86424F9DB7 /* Pods_LivePlayer_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		70D22C2A226301BB009FFE9F /* BasePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlayerViewController.swift; sourceTree = "<group>"; };
 		70D22C2D226303BC009FFE9F /* RegularPlayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularPlayerExtension.swift; sourceTree = "<group>"; };
 		70D22C2F2263067A009FFE9F /* NSObjectExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtension.swift; sourceTree = "<group>"; };
+		70D22C3622633A24009FFE9F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		7ABF08F633F6CC86424F9DB7 /* Pods_LivePlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LivePlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5AFD8E245E4E4F3980A1DBB /* Pods-LivePlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivePlayer_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivePlayer_Example/Pods-LivePlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CB051895A11C7AB72593BC19 /* Pods-LivePlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivePlayer_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivePlayer_Tests/Pods-LivePlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,8 +124,9 @@
 				70D22C1F2262F2FF009FFE9F /* Data */,
 				7058AE0F212128BC00D57989 /* Model */,
 				70D22C2C226303A6009FFE9F /* Extension */,
-				7058AE0D212126E500D57989 /* Main.storyboard */,
 				70D22C2822630148009FFE9F /* CustomSlider.swift */,
+				70D22C3622633A24009FFE9F /* Log.swift */,
+				7058AE0D212126E500D57989 /* Main.storyboard */,
 				70892705211138ED00423538 /* clearsmaller.png */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -278,12 +281,12 @@
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = B23RT9FP44;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = B23RT9FP44;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
@@ -393,6 +396,7 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				70D22C262262F713009FFE9F /* PlayerViewModel.swift in Sources */,
+				70D22C3722633A24009FFE9F /* Log.swift in Sources */,
 				70D22C2922630148009FFE9F /* CustomSlider.swift in Sources */,
 				70D22C302263067A009FFE9F /* NSObjectExtension.swift in Sources */,
 				7058AE082121262100D57989 /* PlayerViewController.swift in Sources */,
@@ -551,8 +555,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -569,8 +572,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -590,8 +592,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LivePlayer_Example.app/LivePlayer_Example";
 			};
 			name = Debug;
@@ -606,8 +607,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LivePlayer_Example.app/LivePlayer_Example";
 			};
 			name = Release;

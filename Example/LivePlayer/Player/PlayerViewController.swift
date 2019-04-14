@@ -17,6 +17,7 @@ class PlayerViewController: BasePlayerViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     lazy private var player: RegularPlayer = {
@@ -52,8 +53,7 @@ class PlayerViewController: BasePlayerViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        player.readyToPlay()
-        player.player.playImmediately(atRate: 1.0)
+        player.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -126,43 +126,36 @@ class PlayerViewController: BasePlayerViewController {
 extension PlayerViewController: PlayerDelegate {
     
     func playerDidUpdateState(player: Player, previousState: PlayerState) {
-        NSLog("playerDidUpdateState \(player.state)")
-        activityIndicator.isHidden = true
-        
+        printLog("playerDidUpdateState \(player.state)")
+        statusLabel.text = "\(player.state)"
+
         switch player.state {
         case .loading:
             activityIndicator.isHidden = false
             
         case .failed:
-            NSLog("🚫 \(String(describing: player.error))")
- 
+            printLog("🚫 \(String(describing: player.error))")
+            activityIndicator.isHidden = true
+
         default:
-            break
+            activityIndicator.isHidden = true
         }
     }
     
-    func playerDidUpdatePlaying(player: Player) {
+    func playerDidUpdateTimeControlStatus(player: Player) {
         playButton.isSelected = player.playing
     }
     
     func playerDidUpdateTime(player: Player) {
-        guard player.duration > 0 else {
-            return
-        }
-        
+        guard player.duration > 0 else { return }
+        guard slider.isHighlighted == false else { return }
         let ratio = player.time / player.duration
-        
-        if slider.isHighlighted == false {
-            slider.value = Float(ratio)
-        }
+        slider.value = Float(ratio)
     }
     
     func playerDidUpdateBufferedTime(player: Player) {
-        
         guard player.duration > 0 else { return }
-        
         let ratio = Int((player.bufferedTime / player.duration) * 100)
-        
         label.text = "Buffer: \(ratio)%"
     }
 }

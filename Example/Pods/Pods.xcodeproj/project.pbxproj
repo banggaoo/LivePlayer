@@ -10,13 +10,13 @@
 		007DDC0009CD02B400E0ADDB543ACFC1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		19697EFFE6D31CEEC33C73B3E61EE9A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		7057B0E22135507600EFBCBA /* RegularPlayer_Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7057B0DE2135507600EFBCBA /* RegularPlayer_Capability.swift */; };
-		7057B0E32135507600EFBCBA /* RegularPlayer_Define.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7057B0DF2135507600EFBCBA /* RegularPlayer_Define.swift */; };
 		7057B0E42135507600EFBCBA /* RegularPlayer_Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7057B0E02135507600EFBCBA /* RegularPlayer_Observer.swift */; };
 		7057B0E52135507600EFBCBA /* RegularPlayer_Autorestart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7057B0E12135507600EFBCBA /* RegularPlayer_Autorestart.swift */; };
 		70892701211137E800423538 /* CMTime+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FD211137E800423538 /* CMTime+Utilities.swift */; };
 		70892702211137E800423538 /* RegularPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FE211137E800423538 /* RegularPlayer.swift */; };
 		70892703211137E800423538 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FF211137E800423538 /* Player.swift */; };
 		70892704211137E800423538 /* AVPlayer+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70892700211137E800423538 /* AVPlayer+Utilities.swift */; };
+		70D22C3922633A44009FFE9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C3822633A44009FFE9F /* Log.swift */; };
 		732A922A1C44D5B9AD67034757125602 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		76B7BA87E4CD9D6F442836AB8A695C42 /* Pods-LivePlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 5936B31A0C00741728718B93A3AB4BE9 /* Pods-LivePlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7E3C0AD1F523A7A9A491664FB78C39CE /* LivePlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 847D1DA43B9E088D17C7496A65B1D551 /* LivePlayer-dummy.m */; };
@@ -62,7 +62,6 @@
 		5936B31A0C00741728718B93A3AB4BE9 /* Pods-LivePlayer_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LivePlayer_Tests-umbrella.h"; sourceTree = "<group>"; };
 		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		7057B0DE2135507600EFBCBA /* RegularPlayer_Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegularPlayer_Capability.swift; path = LivePlayer/Classes/RegularPlayer_Capability.swift; sourceTree = "<group>"; };
-		7057B0DF2135507600EFBCBA /* RegularPlayer_Define.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegularPlayer_Define.swift; path = LivePlayer/Classes/RegularPlayer_Define.swift; sourceTree = "<group>"; };
 		7057B0E02135507600EFBCBA /* RegularPlayer_Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegularPlayer_Observer.swift; path = LivePlayer/Classes/RegularPlayer_Observer.swift; sourceTree = "<group>"; };
 		7057B0E12135507600EFBCBA /* RegularPlayer_Autorestart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegularPlayer_Autorestart.swift; path = LivePlayer/Classes/RegularPlayer_Autorestart.swift; sourceTree = "<group>"; };
 		708926FD211137E800423538 /* CMTime+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMTime+Utilities.swift"; path = "LivePlayer/Classes/CMTime+Utilities.swift"; sourceTree = "<group>"; };
@@ -70,6 +69,7 @@
 		708926FF211137E800423538 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = LivePlayer/Classes/Player.swift; sourceTree = "<group>"; };
 		70892700211137E800423538 /* AVPlayer+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AVPlayer+Utilities.swift"; path = "LivePlayer/Classes/AVPlayer+Utilities.swift"; sourceTree = "<group>"; };
 		7089270721113D9900423538 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		70D22C3822633A44009FFE9F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		7C80B465592D7C9E31C81EC22E105B61 /* LivePlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LivePlayer-umbrella.h"; sourceTree = "<group>"; };
 		847D1DA43B9E088D17C7496A65B1D551 /* LivePlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LivePlayer-dummy.m"; sourceTree = "<group>"; };
 		89DECAB5C8C4CAE7408C8979A1B71B81 /* Pods-LivePlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LivePlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -125,11 +125,11 @@
 				708926FF211137E800423538 /* Player.swift */,
 				708926FE211137E800423538 /* RegularPlayer.swift */,
 				7057B0E12135507600EFBCBA /* RegularPlayer_Autorestart.swift */,
-				7057B0DE2135507600EFBCBA /* RegularPlayer_Capability.swift */,
-				7057B0DF2135507600EFBCBA /* RegularPlayer_Define.swift */,
 				7057B0E02135507600EFBCBA /* RegularPlayer_Observer.swift */,
+				7057B0DE2135507600EFBCBA /* RegularPlayer_Capability.swift */,
 				6B4A9B249A52B8E17B1D16551A79E071 /* Pod */,
 				FDB5DCE601876B9FC96D74CEA9B44EBD /* Support Files */,
+				70D22C3822633A44009FFE9F /* Log.swift */,
 			);
 			name = LivePlayer;
 			path = ../..;
@@ -343,7 +343,7 @@
 				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					672CE920194A42462833BBA5E9DAE36E = {
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -374,7 +374,7 @@
 			files = (
 				7057B0E52135507600EFBCBA /* RegularPlayer_Autorestart.swift in Sources */,
 				70892703211137E800423538 /* Player.swift in Sources */,
-				7057B0E32135507600EFBCBA /* RegularPlayer_Define.swift in Sources */,
+				70D22C3922633A44009FFE9F /* Log.swift in Sources */,
 				7E3C0AD1F523A7A9A491664FB78C39CE /* LivePlayer-dummy.m in Sources */,
 				70892702211137E800423538 /* RegularPlayer.swift in Sources */,
 				70892701211137E800423538 /* CMTime+Utilities.swift in Sources */,
@@ -478,7 +478,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -579,7 +579,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

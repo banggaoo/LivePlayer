@@ -10,148 +10,92 @@ import AVKit
 
 // MARK: Capability Protocols
 
-extension RegularPlayer: AirPlayCapable
-{
-    public var isAirPlayEnabled: Bool
-    {
-        get
-        {
-            return self.player.allowsExternalPlayback
-        }
-        set
-        {
-            return self.player.allowsExternalPlayback = newValue
-        }
+extension RegularPlayer: AirPlayCapable {
+    public var isAirPlayEnabled: Bool {
+        get { return player.allowsExternalPlayback }
+        set { return player.allowsExternalPlayback = newValue }
     }
 }
 
 #if os(iOS)
-extension RegularPlayer: PictureInPictureCapable
-{
-    @available(iOS 9.0, *)
-    public var pictureInPictureController: AVPictureInPictureController?
-    {
-        return self._pictureInPictureController
+extension RegularPlayer: PictureInPictureCapable {
+    public var pictureInPictureController: AVPictureInPictureController? {
+        return _pictureInPictureController
     }
 }
 #endif
 
-extension RegularPlayer: VolumeCapable
-{
-    public var volume: Float
-    {
-        get
-        {
-            return self.player.volume
-        }
-        set
-        {
-            self.player.volume = newValue
-        }
+extension RegularPlayer: VolumeCapable {
+    public var volume: Float {
+        get { return player.volume }
+        set { player.volume = newValue }
     }
 }
 
-extension RegularPlayer: FillModeCapable
-{
-    public var fillMode: FillMode
-    {
-        get
-        {
-            let gravity = (self.view.layer as! AVPlayerLayer).videoGravity
-            
-            return gravity == .resizeAspect ? .fit : .fill
+extension RegularPlayer: FillModeCapable {
+    public var fillMode: FillMode {
+        get {
+            let gravity = (view.layer as? AVPlayerLayer)?.videoGravity
+            return getFillMode(by: gravity)
         }
-        set
-        {
-            let gravity: AVLayerVideoGravity
-            
-            switch newValue
-            {
-            case .fit:
-                
-                gravity = .resizeAspect
-                
-            case .fill:
-                
-                gravity = .resizeAspectFill
-            }
-            
-            (self.view.layer as! AVPlayerLayer).videoGravity = gravity
-        }
-    }
-}
-
-extension RegularPlayer: TextTrackCapable
-{
-    public var selectedTextTrack: TextTrackMetadata?
-    {
-        guard let group = self.player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else
-        {
-            return nil
-        }
-        
-        if #available(iOS 9.0, *)
-        {
-            return self.player.currentItem?.currentMediaSelection.selectedMediaOption(in: group)
-        }
-        else
-        {
-            return self.player.currentItem?.selectedMediaOption(in: group)
+        set (newValue) {
+            let gravity = getVideoGravity(by: newValue)
+            (view.layer as? AVPlayerLayer)?.videoGravity = gravity
         }
     }
     
-    public var availableTextTracks: [TextTrackMetadata]
-    {
-        guard let group = self.player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else
-        {
-            return []
+    private func getFillMode(by gravity: AVLayerVideoGravity?) -> FillMode {
+        return gravity == .resizeAspect ? .fit : .fill
+    }
+    private func getVideoGravity(by fillMode: FillMode) -> AVLayerVideoGravity {
+        switch fillMode {
+        case .fit: return .resizeAspect
+        case .fill: return .resizeAspectFill
         }
+    }
+}
+
+extension RegularPlayer: TextTrackCapable {
+    
+    public var selectedTextTrack: TextTrackMetadata? {
+        guard let group = player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else { return nil }
+        return player.currentItem?.currentMediaSelection.selectedMediaOption(in: group)
+    }
+    
+    public var availableTextTracks: [TextTrackMetadata] {
+        guard let group = player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else { return [] }
         return group.options
     }
     
-    public func fetchTextTracks(completion: @escaping ([TextTrackMetadata], TextTrackMetadata?) -> Void)
-    {
-        self.player.currentItem?.asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.availableMediaCharacteristicsWithMediaSelectionOptions)]) { [weak self] in
-            guard let strongSelf = self, let group = strongSelf.player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else
-            {
+    public func fetchTextTracks(completion: @escaping ([TextTrackMetadata], TextTrackMetadata?) -> Void) {
+        player.currentItem?.asset.loadValuesAsynchronously(forKeys: [#keyPath(AVAsset.availableMediaCharacteristicsWithMediaSelectionOptions)]) { [weak self] in
+            guard
+                let `self` = self,
+                let group = self.player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else {
                 completion([], nil)
                 return
             }
-            if #available(iOS 9.0, *)
-            {
-                completion(group.options, strongSelf.player.currentItem?.currentMediaSelection.selectedMediaOption(in: group))
-            }
-            else
-            {
-                completion(group.options, strongSelf.player.currentItem?.selectedMediaOption(in: group))
-            }
+            completion(group.options, self.player.currentItem?.currentMediaSelection.selectedMediaOption(in: group))
         }
     }
     
-    public func select(_ textTrack: TextTrackMetadata?)
-    {
-        guard let group = self.player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else
-        {
-            return
-        }
-        
-        guard let track = textTrack else
-        {
-            self.player.currentItem?.select(nil, in: group)
+    public func select(_ textTrack: TextTrackMetadata?) {
+        guard let group = player.currentItem?.asset.mediaSelectionGroup(forMediaCharacteristic: .legible) else { return }
+        guard let track = textTrack else {
+            player.currentItem?.select(nil, in: group)
             return
         }
         
         let option = group.options.first(where: { option in
             track.matches(option)
         })
-        self.player.currentItem?.select(option, in: group)
+        player.currentItem?.select(option, in: group)
     }
 }
 
-extension AVMediaSelectionOption: TextTrackMetadata
-{
-    public var isSDHTrack: Bool
-    {
-        return self.hasMediaCharacteristic(.describesMusicAndSoundForAccessibility) && self.hasMediaCharacteristic(.transcribesSpokenDialogForAccessibility)
+extension AVMediaSelectionOption: TextTrackMetadata {
+    public var isSDHTrack: Bool {
+        return hasMediaCharacteristic(.describesMusicAndSoundForAccessibility) && hasMediaCharacteristic(.transcribesSpokenDialogForAccessibility)
     }
 }
+
