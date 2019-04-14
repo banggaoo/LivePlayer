@@ -68,16 +68,12 @@ class PlayerViewController: BasePlayerViewController {
         view.insertSubview(player.view, at: 0)
     }
     
-    private var urlAsset: AVURLAsset? {
-        return (player.player.currentItem?.asset) as? AVURLAsset
-    }
-    
     private func loadVideo() {
         guard let url = viewModel.mediaUrl else {
             emptyPlayer()
             return
         }
-        guard let urlAsset = urlAsset else {
+        guard let urlAsset = player.urlAsset else {
             updatePlayerAsset(by: url)
             return
         }
@@ -133,11 +129,11 @@ extension PlayerViewController: PlayerDelegate {
         case .loading:
             activityIndicator.isHidden = false
             
-        case .failed:
+        case .failed, .empty:
             printLog("🚫 \(String(describing: player.error))")
             activityIndicator.isHidden = true
 
-        default:
+        default:  // .ready, .unknown
             activityIndicator.isHidden = true
         }
     }
