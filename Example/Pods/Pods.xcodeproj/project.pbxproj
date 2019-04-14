@@ -13,7 +13,7 @@
 		70892702211137E800423538 /* RegularPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FE211137E800423538 /* RegularPlayer.swift */; };
 		70892703211137E800423538 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708926FF211137E800423538 /* Player.swift */; };
 		70892704211137E800423538 /* AVPlayer+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70892700211137E800423538 /* AVPlayer+Utilities.swift */; };
-		70D22C3922633A44009FFE9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C3822633A44009FFE9F /* Log.swift */; };
+		70D22C3B226345EB009FFE9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C3A226345EA009FFE9F /* Log.swift */; };
 		732A922A1C44D5B9AD67034757125602 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		76B7BA87E4CD9D6F442836AB8A695C42 /* Pods-LivePlayer_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 5936B31A0C00741728718B93A3AB4BE9 /* Pods-LivePlayer_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7E3C0AD1F523A7A9A491664FB78C39CE /* LivePlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 847D1DA43B9E088D17C7496A65B1D551 /* LivePlayer-dummy.m */; };
@@ -63,7 +63,7 @@
 		708926FF211137E800423538 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = LivePlayer/Classes/Player.swift; sourceTree = "<group>"; };
 		70892700211137E800423538 /* AVPlayer+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AVPlayer+Utilities.swift"; path = "LivePlayer/Classes/AVPlayer+Utilities.swift"; sourceTree = "<group>"; };
 		7089270721113D9900423538 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		70D22C3822633A44009FFE9F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		70D22C3A226345EA009FFE9F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Log.swift; path = LivePlayer/Classes/Log.swift; sourceTree = "<group>"; };
 		7C80B465592D7C9E31C81EC22E105B61 /* LivePlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LivePlayer-umbrella.h"; sourceTree = "<group>"; };
 		847D1DA43B9E088D17C7496A65B1D551 /* LivePlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LivePlayer-dummy.m"; sourceTree = "<group>"; };
 		89DECAB5C8C4CAE7408C8979A1B71B81 /* Pods-LivePlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LivePlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -114,13 +114,13 @@
 		031EC7A4EE31551425BF2E6328BB7A9E /* LivePlayer */ = {
 			isa = PBXGroup;
 			children = (
+				70D22C3A226345EA009FFE9F /* Log.swift */,
 				70892700211137E800423538 /* AVPlayer+Utilities.swift */,
 				708926FD211137E800423538 /* CMTime+Utilities.swift */,
 				708926FF211137E800423538 /* Player.swift */,
 				708926FE211137E800423538 /* RegularPlayer.swift */,
 				6B4A9B249A52B8E17B1D16551A79E071 /* Pod */,
 				FDB5DCE601876B9FC96D74CEA9B44EBD /* Support Files */,
-				70D22C3822633A44009FFE9F /* Log.swift */,
 			);
 			name = LivePlayer;
 			path = ../..;
@@ -364,8 +364,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				70892703211137E800423538 /* Player.swift in Sources */,
-				70D22C3922633A44009FFE9F /* Log.swift in Sources */,
 				7E3C0AD1F523A7A9A491664FB78C39CE /* LivePlayer-dummy.m in Sources */,
+				70D22C3B226345EB009FFE9F /* Log.swift in Sources */,
 				70892702211137E800423538 /* RegularPlayer.swift in Sources */,
 				70892701211137E800423538 /* CMTime+Utilities.swift in Sources */,
 				70892704211137E800423538 /* AVPlayer+Utilities.swift in Sources */,
