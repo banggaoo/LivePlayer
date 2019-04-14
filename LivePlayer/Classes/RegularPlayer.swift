@@ -113,6 +113,7 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     public func forceSeek(to time: TimeInterval) {
         player.seek(to: getSeekTime(to: time), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         self.time = time
+        seeking = false
     }
     
     var userWantToPlay = false
