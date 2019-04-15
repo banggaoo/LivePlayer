@@ -16,6 +16,17 @@ final class PlayerViewModel {
         return URL(string: urlString)
     }
     
+    var title: String {
+        return live.subject ?? "Live"
+    }
+    
+    var coverImageUrl: String? {
+        return live.thumbnail_url
+    }
+    var coverImageName: String? {
+        return nil
+    }
+    
     init(with live: LiveModel) {
         self.live = live
     }

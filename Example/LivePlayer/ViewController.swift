@@ -10,13 +10,29 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBAction func singleButton(_ sender: Any) {
+    @IBAction func didTapSingleVideoButton(_ sender: Any) {
         guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleLiveData) else { return }
         presentPlayerVC(with: live)
     }
     
-    private func presentPlayerVC(with live: LiveModel) {
+    @IBAction func didTapSingleVideoWithBGButton(_ sender: Any) {
+        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleLiveData) else { return }
+        presentPlayerVC(with: live, isBackgroundPlayEnabled: true)
+    }
+
+    @IBAction func didTapSingleAudioButton(_ sender: Any) {
+        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleLiveData) else { return }
+        presentPlayerVC(with: live)
+    }
+
+    @IBAction func didTapSingleAudioWithBGButton(_ sender: Any) {
+        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleLiveData) else { return }
+        presentPlayerVC(with: live, isBackgroundPlayEnabled: true)
+    }
+
+    private func presentPlayerVC(with live: LiveModel, isBackgroundPlayEnabled: Bool = false) {
         let vc = PlayerViewController(with: live)
+        vc.isBackgroundPlayEnabled = isBackgroundPlayEnabled
         present(vc, animated: true, completion: nil)
     } 
 }

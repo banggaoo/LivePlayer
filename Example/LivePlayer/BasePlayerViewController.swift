@@ -14,15 +14,7 @@ class BasePlayerViewController: UIViewController {
     var isStatusBarHidden = false {
         didSet { setNeedsStatusBarAppearanceUpdate() }
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient,
-                                                         mode: .moviePlayback,
-                                                         options: [.mixWithOthers])
-    }
-    
+     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -66,5 +58,4 @@ class BasePlayerViewController: UIViewController {
     open override var childForHomeIndicatorAutoHidden: UIViewController? {
         return self.presentedViewController
     }
-    
 }

@@ -22,7 +22,6 @@
 		70D22C262262F713009FFE9F /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C252262F713009FFE9F /* PlayerViewModel.swift */; };
 		70D22C2922630148009FFE9F /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2822630148009FFE9F /* CustomSlider.swift */; };
 		70D22C2B226301BB009FFE9F /* BasePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2A226301BB009FFE9F /* BasePlayerViewController.swift */; };
-		70D22C2E226303BC009FFE9F /* RegularPlayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2D226303BC009FFE9F /* RegularPlayerExtension.swift */; };
 		70D22C302263067A009FFE9F /* NSObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C2F2263067A009FFE9F /* NSObjectExtension.swift */; };
 		70D22C3722633A24009FFE9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C3622633A24009FFE9F /* Log.swift */; };
 		E215C61C76DF4FD485900124 /* Pods_LivePlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABF08F633F6CC86424F9DB7 /* Pods_LivePlayer_Tests.framework */; };
@@ -62,7 +61,6 @@
 		70D22C252262F713009FFE9F /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		70D22C2822630148009FFE9F /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		70D22C2A226301BB009FFE9F /* BasePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlayerViewController.swift; sourceTree = "<group>"; };
-		70D22C2D226303BC009FFE9F /* RegularPlayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularPlayerExtension.swift; sourceTree = "<group>"; };
 		70D22C2F2263067A009FFE9F /* NSObjectExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtension.swift; sourceTree = "<group>"; };
 		70D22C3622633A24009FFE9F /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		7ABF08F633F6CC86424F9DB7 /* Pods_LivePlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LivePlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,7 +196,6 @@
 		70D22C2C226303A6009FFE9F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				70D22C2D226303BC009FFE9F /* RegularPlayerExtension.swift */,
 				70D22C2F2263067A009FFE9F /* NSObjectExtension.swift */,
 			);
 			path = Extension;
@@ -279,6 +276,11 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = B23RT9FP44;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -401,7 +403,6 @@
 				70D22C212262F335009FFE9F /* DummyData.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				70D22C2B226301BB009FFE9F /* BasePlayerViewController.swift in Sources */,
-				70D22C2E226303BC009FFE9F /* RegularPlayerExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
