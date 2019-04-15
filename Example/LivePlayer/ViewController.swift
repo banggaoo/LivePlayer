@@ -21,12 +21,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func didTapSingleAudioButton(_ sender: Any) {
-        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleLiveData) else { return }
+        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleAudioOnlyData) else { return }
         presentPlayerVC(with: live)
     }
 
     @IBAction func didTapSingleAudioWithBGButton(_ sender: Any) {
-        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleLiveData) else { return }
+        guard let live = LiveModel.decodeJsonData(jsonString: DummyData.singleAudioOnlyData) else { return }
         presentPlayerVC(with: live, isBackgroundPlayEnabled: true)
     }
 

@@ -16,6 +16,17 @@ struct DummyData {
 }
 """
     
+    static let singleAudioOnlyData: String = """
+{
+    "media_url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_4x3/gear0/prog_index.m3u8"
+}
+"""
+    
+    
+    
+    
+    
+    
     //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/chunklist.m3u8
     //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/3ngjunba/00000000/media_11495.ts
     
