@@ -3,7 +3,7 @@
 //  Pods
 //
 //  Created by King, Gavin on 3/7/17.
-//
+//  Modified by James Lee on 7/30/18
 //
 
 import UIKit
@@ -12,7 +12,6 @@ import AVFoundation
 import AVKit
 import CoreMedia
 
-/// A RegularPlayer is used to play regular videos.
 open class RegularPlayer: NSObject, Player, ProvidesView {
     private let player = AVPlayer()
     
@@ -55,33 +54,26 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     // MARK: Player
     
     private var playerTimeObserver: Any?
-
     weak public var delegate: PlayerDelegate?
     
     public private(set) var state: PlayerState = .ready {
         didSet { delegate?.playerDidUpdateState(player: self, previousState: oldValue) }
     }
-    
     public var duration: TimeInterval {
         return player.currentItem?.duration.timeInterval ?? 0
     }
-    
     public private(set) var time: TimeInterval = 0 {
         didSet { delegate?.playerDidUpdateTime(player: self) }
     }
-    
     public private(set) var bufferedTime: TimeInterval = 0 {
         didSet { delegate?.playerDidUpdateBufferedTime(player: self) }
     }
-    
     public var playing: Bool {
         return (player.timeControlStatus == .playing)
     }
-    
     public var error: NSError? {
         return player.errorForPlayerOrItem
     }
-    
     public var urlAsset: AVURLAsset? {
         return (player.currentItem?.asset) as? AVURLAsset
     }
@@ -109,43 +101,38 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
         self.time = time
     }
     
-    private var userWantToPlay = false
+    public private(set) var userWantToPlay = false
     public func start() {
         readyToPlay()
         play()
     }
-    
     public func readyToPlay() {
         userWantToPlay = true
         prepareToPlay()
     }
-    
-    private func prepareToPlay() {
-        startTimer()
-        
-        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
-        player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
-    }
-    
     public func play() {
         player.play()
-    }
-    
-    public func pause() {
-        player.pause()
     }
     
     public func stop() {
         readyToStop()
         pause()
     }
-    
     private func readyToStop() {
         userWantToPlay = false
         
         prepareToStop()
     }
-    
+    public func pause() {
+        player.pause()
+    }
+
+    private func prepareToPlay() {
+        startTimer()
+        
+        player.currentItem?.canUseNetworkResourcesForLiveStreamingWhilePaused = true
+        player.currentItem?.preferredForwardBufferDuration = TimeInterval(0)
+    }
     private func prepareToStop() {
         timer = nil
         
@@ -171,9 +158,7 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
         
         addPlayerObservers()
         
-        view.configureForPlayer(player: self.player)
-        
-        automaticallyWaitsToMinimizeStalling = false
+        view.configure(for: player)
     }
     
     deinit {
@@ -202,7 +187,6 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     public var usesExternalPlaybackWhileExternalScreenIsActive: Bool = true {
         didSet { player.usesExternalPlaybackWhileExternalScreenIsActive = true }
     }
-
     public var automaticallyWaitsToMinimizeStalling: Bool = true {
         didSet { player.automaticallyWaitsToMinimizeStalling = automaticallyWaitsToMinimizeStalling }
     }
@@ -238,7 +222,7 @@ public final class RegularPlayerView: UIView {
     var playerLayer: AVPlayerLayer { return layer as! AVPlayerLayer }
     override public class var layerClass: AnyClass { return AVPlayerLayer.self }
     
-    func configureForPlayer(player: AVPlayer) {
+    func configure(for player: AVPlayer) {
         (layer as? AVPlayerLayer)?.player = player
     }
 }
@@ -365,6 +349,8 @@ extension RegularPlayer {
     private func addPlayerObservers() {
         player.addObserver(self, forKeyPath: RegularPlayer.KeyPath.Player.Status, options: [.initial, .new], context: nil)
         player.addObserver(self, forKeyPath: RegularPlayer.KeyPath.Player.TimeControlStatus, options: [.new, .old], context: nil)
+        
+        addPlayerTimeObserver()
     }
     private func addPlayerTimeObserver() {
         playerTimeObserver = player.addPeriodicTimeObserver(forInterval: timeUpdateInterval.seektime, queue: DispatchQueue.main, using: { [weak self] (cmTime) in
