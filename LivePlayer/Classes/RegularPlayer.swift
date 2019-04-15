@@ -51,6 +51,13 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     
     public let view: RegularPlayerView = RegularPlayerView(frame: .zero)
     
+    public func disconnectAVPlayerLayer() {
+        view.disconnect()
+    }
+    public func connectAVPlayerLayer() {
+        view.configure(for: player)
+    }
+    
     // MARK: Player
     
     private var playerTimeObserver: Any?
@@ -61,6 +68,9 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     }
     public var duration: TimeInterval {
         return player.currentItem?.duration.timeInterval ?? 0
+    }
+    public var rate: Float {
+        return player.rate
     }
     public private(set) var time: TimeInterval = 0 {
         didSet { delegate?.playerDidUpdateTime(player: self) }
@@ -162,6 +172,7 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     }
     
     deinit {
+        printLog("RegularPlayer deinit")
         timer = nil
         
         removePlayerItemObserversIfExists()
@@ -224,6 +235,10 @@ public final class RegularPlayerView: UIView {
     
     func configure(for player: AVPlayer) {
         (layer as? AVPlayerLayer)?.player = player
+    }
+    
+    func disconnect() {
+        (layer as? AVPlayerLayer)?.player = nil
     }
 }
 
