@@ -10,15 +10,15 @@ import UIKit
 import LivePlayer
 import AVFoundation
 
-class PlayerViewController: BasePlayerViewController {
+final class PlayerViewController: BasePlayerViewController {
     private let viewModel: PlayerViewModel
     
-    @IBOutlet weak var exitButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var slider: UISlider!
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var exitButton: UIButton!
+    @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var slider: UISlider!
+    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var statusLabel: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 
     lazy private var player: RegularPlayer = {
         let player = RegularPlayer()

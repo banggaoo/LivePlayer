@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import LivePlayer
-import AVFoundation
 
 class ViewController: UIViewController {
 

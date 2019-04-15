@@ -16,7 +16,6 @@
 		7058AE082121262100D57989 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7058AE042121262000D57989 /* PlayerViewController.swift */; };
 		7058AE0E212126E500D57989 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7058AE0D212126E500D57989 /* Main.storyboard */; };
 		7058AE12212128BC00D57989 /* LiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7058AE10212128BC00D57989 /* LiveModel.swift */; };
-		7058AE13212128BC00D57989 /* LivesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7058AE11212128BC00D57989 /* LivesModel.swift */; };
 		70892706211138ED00423538 /* clearsmaller.png in Resources */ = {isa = PBXBuildFile; fileRef = 70892705211138ED00423538 /* clearsmaller.png */; };
 		70D22C212262F335009FFE9F /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D22C202262F335009FFE9F /* DummyData.swift */; };
 		70D22C232262F6B8009FFE9F /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 70D22C222262F6B8009FFE9F /* PlayerViewController.xib */; };
@@ -57,7 +56,6 @@
 		7058AE042121262000D57989 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		7058AE0D212126E500D57989 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7058AE10212128BC00D57989 /* LiveModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveModel.swift; sourceTree = "<group>"; };
-		7058AE11212128BC00D57989 /* LivesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivesModel.swift; sourceTree = "<group>"; };
 		70892705211138ED00423538 /* clearsmaller.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearsmaller.png; sourceTree = "<group>"; };
 		70D22C202262F335009FFE9F /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		70D22C222262F6B8009FFE9F /* PlayerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				7058AE10212128BC00D57989 /* LiveModel.swift */,
-				7058AE11212128BC00D57989 /* LivesModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -405,7 +402,6 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				70D22C2B226301BB009FFE9F /* BasePlayerViewController.swift in Sources */,
 				70D22C2E226303BC009FFE9F /* RegularPlayerExtension.swift in Sources */,
-				7058AE13212128BC00D57989 /* LivesModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

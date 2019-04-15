@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PlayerViewModel {
+final class PlayerViewModel {
     private let live: LiveModel
 
     var mediaUrl: URL? {

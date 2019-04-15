@@ -8,18 +8,18 @@
 
 import Foundation
 
-class LiveModel: Codable {
+final class LiveModel: Codable {
 
-    var id: Int?
-    var code_name: String?
-    var subject: String?
-    var media_url: String?
-    var thumbnail_url: String?
-    var premium: Bool?
-    var screen_direction: String?
-    var likes_count: Int?
-    var bookmarks_count: Int?
-    var media_type: String?
+    private(set) var id: Int?
+    private(set) var code_name: String?
+    private(set) var subject: String?
+    private(set) var media_url: String?
+    private(set) var thumbnail_url: String?
+    private(set) var premium: Bool?
+    private(set) var screen_direction: String?
+    private(set) var likes_count: Int?
+    private(set) var bookmarks_count: Int?
+    private(set) var media_type: String?
     //var live_channel: LiveChannelModel?
     
     static func decodeJsonData(jsonString: String) -> LiveModel? {

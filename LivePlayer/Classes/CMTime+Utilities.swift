@@ -40,4 +40,8 @@ extension TimeInterval {
         if interval.seconds == seconds, interval.minutes == minutes, interval.hours == hours { return true }
         return false
     }
+    
+    var seektime: CMTime {
+        return CMTimeMakeWithSeconds(self, preferredTimescale: Int32(NSEC_PER_SEC))
+    }
 }

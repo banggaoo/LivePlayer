@@ -14,12 +14,7 @@ import CoreMedia
 
 /// A RegularPlayer is used to play regular videos.
 open class RegularPlayer: NSObject, Player, ProvidesView {
-    
-    // MARK: Private Properties
-    
-    private var player = AVPlayer()
-    
-    // MARK: Public API
+    private let player = AVPlayer()
     
     /// Sets an AVAsset on the player.
     ///
@@ -56,14 +51,14 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     // MARK: ProvidesView
     
     public let view: RegularPlayerView = RegularPlayerView(frame: .zero)
-    private var regularPlayerView: RegularPlayerView { return view }
-    private var playerLayer: AVPlayerLayer { return regularPlayerView.playerLayer }
     
     // MARK: Player
     
+    private var playerTimeObserver: Any?
+
     weak public var delegate: PlayerDelegate?
     
-    public var state: PlayerState = .ready {
+    public private(set) var state: PlayerState = .ready {
         didSet { delegate?.playerDidUpdateState(player: self, previousState: oldValue) }
     }
     
@@ -71,16 +66,16 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
         return player.currentItem?.duration.timeInterval ?? 0
     }
     
-    public var time: TimeInterval = 0 {
+    public private(set) var time: TimeInterval = 0 {
         didSet { delegate?.playerDidUpdateTime(player: self) }
     }
     
-    public var bufferedTime: TimeInterval = 0 {
+    public private(set) var bufferedTime: TimeInterval = 0 {
         didSet { delegate?.playerDidUpdateBufferedTime(player: self) }
     }
     
     public var playing: Bool {
-        return player.timeControlStatus == .playing
+        return (player.timeControlStatus == .playing)
     }
     
     public var error: NSError? {
@@ -91,10 +86,6 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
         return (player.currentItem?.asset) as? AVURLAsset
     }
 
-    func getSeekTime(to time: TimeInterval) -> CMTime {
-        return CMTimeMakeWithSeconds(time, preferredTimescale: Int32(NSEC_PER_SEC))
-    }
-    
     // MARK: Control
     
     private var seeking: Bool = false
@@ -102,7 +93,7 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
         guard seeking == false else { return }
         seeking = true
         
-        player.seek(to: getSeekTime(to: time), completionHandler: { [weak self] (finished) -> Void in
+        player.seek(to: time.seektime, completionHandler: { [weak self] (finished) -> Void in
             guard finished == true else { return }
             self?.seeking = false
             
@@ -111,12 +102,12 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     }
     
     public func forceSeek(to time: TimeInterval) {
-        player.seek(to: getSeekTime(to: time), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+        player.seek(to: time.seektime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         self.time = time
         seeking = false
     }
     
-    var userWantToPlay = false
+    private var userWantToPlay = false
     public func start() {
         readyToPlay()
         play()
@@ -143,15 +134,14 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     }
     
     public func stop() {
-        guard readyToStop() == true else { return }
+        readyToStop()
         pause()
     }
     
-    private func readyToStop() -> Bool {
+    private func readyToStop() {
         userWantToPlay = false
         
         prepareToStop()
-        return true
     }
     
     private func prepareToStop() {
@@ -179,7 +169,7 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
         
         addPlayerObservers()
         
-        regularPlayerView.configureForPlayer(player: self.player)
+        view.configureForPlayer(player: self.player)
         
         automaticallyWaitsToMinimizeStalling = false
     }
@@ -187,9 +177,7 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     deinit {
         timer = nil
         
-        if let playerItem = player.currentItem {
-            removePlayerItemObservers(from: playerItem)
-        }
+        removePlayerItemObserversIfExists()
         removePlayerObservers()
     }
     
@@ -210,26 +198,18 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     public var supportIncreamentalBitrate: Bool = true
 
     public var usesExternalPlaybackWhileExternalScreenIsActive: Bool = true {
-        didSet {
-            player.usesExternalPlaybackWhileExternalScreenIsActive = true
-        }
+        didSet { player.usesExternalPlaybackWhileExternalScreenIsActive = true }
     }
 
     public var automaticallyWaitsToMinimizeStalling: Bool = true {
-        didSet {
-            player.automaticallyWaitsToMinimizeStalling = automaticallyWaitsToMinimizeStalling
-        }
+        didSet { player.automaticallyWaitsToMinimizeStalling = automaticallyWaitsToMinimizeStalling }
     }
     
-    // MARK: Observers
+    // MARK: Autorestart
     
-    var playerTimeObserver: Any?
-    
-    // MARK: Autrestart
-    
-    var autoRestartLoadCount: Int = 0
-    var autoRestartEmptyCount: Int = 0
-    var autoRestartFailedCount: Int = 0
+    private var autoRestartLoadCount: Int = 0
+    private var autoRestartEmptyCount: Int = 0
+    private var autoRestartFailedCount: Int = 0
     
     private func startTimer() {
         timer = Timer(timeInterval: timerInterval, target: self, selector: #selector(on(timer:)), userInfo: nil, repeats: true)
@@ -247,12 +227,12 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
     
     #if os(iOS)
     public lazy var _pictureInPictureController: AVPictureInPictureController? = {
-        AVPictureInPictureController(playerLayer: regularPlayerView.playerLayer)
+        AVPictureInPictureController(playerLayer: view.playerLayer)
     }()
     #endif
 }
 
-public class RegularPlayerView: UIView {
+public final class RegularPlayerView: UIView {
     var playerLayer: AVPlayerLayer { return layer as! AVPlayerLayer }
     override public class var layerClass: AnyClass { return AVPlayerLayer.self }
     
@@ -289,26 +269,31 @@ extension RegularPlayer {
             break
         }
         
+        autorestartIfNeeded()
+    }
+    
+    private func autorestartIfNeeded() {
         if
             autoRestartFailedCount > Int(assetFailedReloadTimeout) ||
                 autoRestartEmptyCount > Int(assetEmptyReloadTimeout) ||
                 autoRestartLoadCount > Int(assetLoadingReloadTimeout) {  // Need to reset
             
             resetAllAutoRestartCount()
-            guard retrySetIfCan() == true else { return }
+            retrySetIfCan()
             play()
-
-        } else if autoRestartEmptyCount > Int(assetEmptyTimeout) || autoRestartLoadCount > Int(assetLoadingTimeout) {  // try to play
+            
+        } else if
+            autoRestartEmptyCount > Int(assetEmptyTimeout) ||
+                autoRestartLoadCount > Int(assetLoadingTimeout) {  // try to play
             
             resetAllAutoRestartCount()
             retryPlayIfNeeded()
         }
     }
     
-    private func retrySetIfCan() -> Bool {
-        guard let asset: AVAsset = player.currentItem?.asset else { return false }
+    private func retrySetIfCan() {
+        guard let asset: AVAsset = player.currentItem?.asset else { return }
         set(asset)
-        return true
     }
     private func retryPlayIfNeeded() {
         guard player.timeControlStatus != .playing else { return }
@@ -343,7 +328,7 @@ extension RegularPlayer {
     
     // MARK: Register
     
-    func addPlayerItemObservers(to playerItem: AVPlayerItem) {
+    private func addPlayerItemObservers(to playerItem: AVPlayerItem) {
         
         playerItem.addObserver(self, forKeyPath: RegularPlayer.KeyPath.PlayerItem.Status, options: [.initial, .new], context: nil)
         playerItem.addObserver(self, forKeyPath: RegularPlayer.KeyPath.PlayerItem.PlaybackLikelyToKeepUp, options: [.initial, .new], context: nil)
@@ -357,7 +342,12 @@ extension RegularPlayer {
         center.addObserver(self, selector: #selector(playbackDidPlayToEndTime(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
     }
     
-    func removePlayerItemObservers(from playerItem: AVPlayerItem) {
+    private func removePlayerItemObserversIfExists() {
+        guard let playerItem = player.currentItem else { return }
+        removePlayerItemObservers(from: playerItem)
+    }
+    
+    private func removePlayerItemObservers(from playerItem: AVPlayerItem) {
         playerItem.removeObserver(self, forKeyPath: RegularPlayer.KeyPath.PlayerItem.Status, context: nil)
         playerItem.removeObserver(self, forKeyPath: RegularPlayer.KeyPath.PlayerItem.PlaybackLikelyToKeepUp, context: nil)
         playerItem.removeObserver(self, forKeyPath: RegularPlayer.KeyPath.PlayerItem.LoadedTimeRanges, context: nil)
@@ -370,20 +360,24 @@ extension RegularPlayer {
         center.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
     }
     
-    func addPlayerObservers() {
+    private func addPlayerObservers() {
         player.addObserver(self, forKeyPath: RegularPlayer.KeyPath.Player.Status, options: [.initial, .new], context: nil)
         player.addObserver(self, forKeyPath: RegularPlayer.KeyPath.Player.TimeControlStatus, options: [.new, .old], context: nil)
-        
-        playerTimeObserver = player.addPeriodicTimeObserver(forInterval: getSeekTime(to: timeUpdateInterval), queue: DispatchQueue.main, using: { [weak self] (cmTime) in
+    }
+    private func addPlayerTimeObserver() {
+        playerTimeObserver = player.addPeriodicTimeObserver(forInterval: timeUpdateInterval.seektime, queue: DispatchQueue.main, using: { [weak self] (cmTime) in
             guard let time = cmTime.timeInterval else { return }
             self?.time = time
         })
     }
     
-    func removePlayerObservers() {
+    private func removePlayerObservers() {
         player.removeObserver(self, forKeyPath: RegularPlayer.KeyPath.Player.Status, context: nil)
         player.removeObserver(self, forKeyPath: RegularPlayer.KeyPath.Player.TimeControlStatus, context: nil)
         
+        removePlayerTimeObserverIfExits()
+    }
+    private func removePlayerTimeObserverIfExits() {
         guard let playerTimeObserver = playerTimeObserver else { return }
         player.removeTimeObserver(playerTimeObserver)
         self.playerTimeObserver = nil
