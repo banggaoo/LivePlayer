@@ -88,23 +88,25 @@ open class RegularPlayer: NSObject, Player, ProvidesView {
 
     // MARK: Control
     
-    private var seeking: Bool = false
+    public private(set) var seeking: Bool = false
     public func seek(to time: TimeInterval) {
         guard seeking == false else { return }
         seeking = true
         
         player.seek(to: time.seektime, completionHandler: { [weak self] (finished) -> Void in
             guard finished == true else { return }
-            self?.seeking = false
+            guard let `self` = self else { return }
+            guard self.seeking == true else { return }
+            self.seeking = false
             
-            self?.time = time
+            self.time = time
         })
     }
     
     public func forceSeek(to time: TimeInterval) {
+        seeking = false
         player.seek(to: time.seektime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         self.time = time
-        seeking = false
     }
     
     private var userWantToPlay = false
