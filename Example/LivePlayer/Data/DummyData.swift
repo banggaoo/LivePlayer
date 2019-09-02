@@ -12,7 +12,7 @@ struct DummyData {
     
     static let singleLiveData: String = """
 {
-    "media_url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+    "media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_kyc201902.mp4"
 }
 """
     
@@ -24,6 +24,13 @@ struct DummyData {
     
     
     
+    static let multipleLiveData: String = """
+{"lives":[
+{"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_ssj201909.mp4"},
+{"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_bongdalee24219.mp4"},
+{"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_wjfdltpa06.mp4"}
+]}
+"""
     
     
     

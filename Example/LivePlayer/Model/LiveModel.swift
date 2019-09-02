@@ -8,7 +8,20 @@
 
 import Foundation
 
-final class LiveModel: Codable {
+final class LivesModel: Codable {
+    let lives: [LiveModel]
+    
+    static func decodeJsonData(jsonString: String) -> LivesModel? {
+        do {
+            return try JSONDecoder().decode(LivesModel.self, from: jsonString.data(using: .utf8)!)
+        } catch {
+            printLog("Parsing Error \(error)")
+        }
+        return nil
+    }
+}
+
+final class LiveModel: Codable, Hashable {
 
     private(set) var id: Int?
     private(set) var code_name: String?
@@ -29,5 +42,28 @@ final class LiveModel: Codable {
             printLog("Parsing Error \(error)")
         }
         return nil
+    }
+    
+    enum MediaType: Int {
+        case vod = 0
+        case live
+    }
+    
+    var mediaType: MediaType {
+        
+        switch media_type {
+        case "live":
+            return .live
+        default:
+            return .vod
+        }
+    }
+    
+    static func == (lhs: LiveModel, rhs: LiveModel) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(Unmanaged.passUnretained(self).toOpaque())
     }
 }

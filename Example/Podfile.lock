@@ -1,5 +1,5 @@
 PODS:
-  - LivePlayer (0.1.0)
+  - LivePlayer (0.5.0)
 
 DEPENDENCIES:
   - LivePlayer (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LivePlayer: 5a17ac394d26de2ded476bb9a0bd7547898bede1
+  LivePlayer: c061cb1b370f71350a54f16c94a581cbf7548465
 
 PODFILE CHECKSUM: 74c8fd740fad3e44d109a354315e91afe440397e
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.3

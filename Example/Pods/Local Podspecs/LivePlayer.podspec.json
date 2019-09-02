@@ -1,8 +1,8 @@
 {
   "name": "LivePlayer",
-  "version": "0.1.0",
-  "summary": "A short description of LivePlayer.",
-  "description": "TODO: Add long description of the pod here.",
+  "version": "0.5.0",
+  "summary": "Live/VOD Player based AVPlayer.",
+  "description": "Live/VOD Player based on AVPlayer.",
   "homepage": "https://github.com/banggaoo/LivePlayer",
   "license": {
     "type": "MIT",
@@ -13,10 +13,12 @@
   },
   "source": {
     "git": "https://github.com/banggaoo/LivePlayer.git",
-    "tag": "0.1.0"
+    "tag": "0.5.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "10.0"
   },
-  "source_files": "LivePlayer/Classes/**/*"
+  "source_files": "LivePlayer/Classes/**/*",
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
 }
