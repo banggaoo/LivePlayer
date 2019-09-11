@@ -71,10 +71,11 @@ final class PlayerScrollViewController: UIViewController {
     // MARK: UI
     
     private lazy var infinitePageViewController: InfinitePageViewController = {
-        let vcs = (0...4).map { i -> PlayerScrollPageViewController in
-            let vc = PlayerScrollPageViewController()
+        let vcs = (0...4).map { i -> AVPlayerScrollPageViewController in
+            let vc = AVPlayerScrollPageViewController()
+            vc.index = i
             vc.view.backgroundColor = .black  // For enable touch event
-            vc.delegate = self
+//            vc.delegate = self
             return vc
         }
         let vc = InfinitePageViewController(pageViewControllers: vcs)
@@ -83,18 +84,19 @@ final class PlayerScrollViewController: UIViewController {
     }()
     
     private func configurePage(at index: Int, vc: UIViewController) {
-        guard let vc = vc as? PlayerScrollPageViewController else { return }
+        guard let vc = vc as? AVPlayerScrollPageViewController else { return }
         guard let live = lives[safe: index] else { return }
+        print("configurePage at \(index) \(vc.index)")
         vc.configure(live: live)
     }
     
     private func rewindPageIfNeeded(_ vc: UIViewController) {
-        guard let vc = vc as? PlayerScrollPageViewController else { return }
+        guard let vc = vc as? AVPlayerScrollPageViewController else { return }
         vc.rewindIfNeeded()
     }
     
     private func playPage(_ vc: UIViewController) {
-        guard let vc = vc as? PlayerScrollPageViewController else { return }
+        guard let vc = vc as? AVPlayerScrollPageViewController else { return }
         vc.play()
     }
     
@@ -102,12 +104,14 @@ final class PlayerScrollViewController: UIViewController {
         guard let index = getIndex(of: vc) else { return }
         guard let new = infinitePageViewController.getCirculatedViewController(from: vc, offset: offset) else { return }
         guard let newIndex = getCirculatedIndex(from: index, offset: offset) else { return }
+        print("configurePage from \(index) \(vc.index) \(offset)")
+
         configurePage(at: newIndex, vc: new)
     }
     
     private func getIndex(of viewController: UIViewController) -> Int? {
         guard
-            let liveHashValue = (viewController as? PlayerScrollPageViewController)?.liveHashValue,
+            let liveHashValue = (viewController as? AVPlayerScrollPageViewController)?.liveHashValue,
             let index = getIndex(of: liveHashValue) else { return nil }
         return index
     }
@@ -160,16 +164,17 @@ extension PlayerScrollViewController: InfinitePageViewDelegate {
         //        configurePage(from: current, offset: offset + increment)
     }
 }
-
+/*
 extension PlayerScrollViewController: PlayerScrollPageViewControllerDelegate {
 
-    func didTapProfileButton(_ sender: PlayerScrollPageViewController, id: Int) {
+    func didTapProfileButton(_ sender: AVPlayerScrollPageViewController, id: Int) {
 //        let vc = ProfileViewController(userId: "\(id)", chatId: nil)
 //        vc.hidesBottomBarWhenPushed = true
 //        navigationController?.pushViewController(vc, animated: true)
     }
 
-    func didEndPlaying(_ sender: PlayerScrollPageViewController) {
+    func didEndPlaying(_ sender: AVPlayerScrollPageViewController) {
         infinitePageViewController.moveIfCan(from: sender, offset: 1)
     }
 }
+*/

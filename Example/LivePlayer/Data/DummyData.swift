@@ -26,13 +26,16 @@ struct DummyData {
     
     static let multipleLiveData: String = """
 {"lives":[
-{"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_ssj201909.mp4"},
-{"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_bongdalee24219.mp4"},
-{"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_wjfdltpa06.mp4"}
+{"media_url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"},
+{"media_url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"},
+{"media_url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8"}
 ]}
 """
     
-    
+//    {"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_ssj201909.mp4"},
+//    {"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_bongdalee24219.mp4"},
+//    {"media_url": "https://d1onhczzmo7z1l.cloudfront.net/video_qna/Q_A_wjfdltpa06.mp4"}
+
     
     //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/chunklist.m3u8
     //https://wowzaprod114-i.akamaihd.net/hls/live/678947/92320d61_1_1728/3ngjunba/00000000/media_11495.ts

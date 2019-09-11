@@ -35,7 +35,6 @@ final class PlayerScrollPageViewController: UIViewController {
                 type: .vod,
                 published: true)
         }
-//        profileVew.configure(id: answerUserId, nickname: nickname, categoryName: categoryName, introduction: introduction, question: question, likeCount: likeCount, avatar: profileImgUrlStr, followed: followed)
     }
     
     func play() {
@@ -55,7 +54,6 @@ final class PlayerScrollPageViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         playerController.play()
-        isHiddenComponent = false
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -66,9 +64,6 @@ final class PlayerScrollPageViewController: UIViewController {
     
     private func setup() {
         playerController.insertPlayerView(in: view)
-//        view.addSubviewWithFullsize(backgroundView)
-//        view.addSubviewWithFullsize(profileVew)
-//        backgroundPresenter.presentType = .control
     }
     
     // MARK: UI
@@ -78,18 +73,12 @@ final class PlayerScrollPageViewController: UIViewController {
         ctr.delegate = self
         return ctr
     }()
-    
-    private var isHiddenComponent: Bool = false {
-        didSet {
-//            profileVew.setControlViewHidden(isHiddenComponent)
-//            backgroundPresenter.presentType = isHiddenComponent ? .hide : .control
-        }
-    }
 }
 
 extension PlayerScrollPageViewController: PlayerControllerDelegate {
     
     func didChangePlayerState(_ state: PlayerController.PlayerState) {
+        print("didChangePlayerState \(state)")
         guard playerState != state else { return }
         guard playerState == .empty, state == .failed else { return }
         playerState = state
@@ -108,6 +97,7 @@ extension PlayerScrollPageViewController: PlayerControllerDelegate {
     }
     
     func didFailedLoadBecause(_ state: PlayerController.FailedState) {
+        print("didFailedLoadBecause \(state)")
 //        switch state {
 //        case .ended:
 //            backgroundPresenter.showMessage(with: .end)
@@ -117,9 +107,11 @@ extension PlayerScrollPageViewController: PlayerControllerDelegate {
     }
     
     func didUpdateTimeControlStatus(_ playing: Bool) {
+        print("didUpdateTimeControlStatus \(playing)")
     }
     
     func playerDidUpdateTime(_ time: TimeInterval, _ duration: TimeInterval) {
+        print("playerDidUpdateTime \(time) \(duration)")
         if time > 0, time == duration {
             delegate?.didEndPlaying(self)
         }

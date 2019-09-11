@@ -32,6 +32,7 @@
 		70E49AC5231CE4DE00E9A353 /* RegularPlayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E49AC4231CE4DE00E9A353 /* RegularPlayerExtension.swift */; };
 		70E49AC7231CE5D600E9A353 /* CollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E49AC6231CE5D600E9A353 /* CollectionExtension.swift */; };
 		70E49AC9231CE60900E9A353 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E49AC8231CE60900E9A353 /* UIViewExtension.swift */; };
+		70E49ACB231CEC4A00E9A353 /* AVPlayerScrollPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E49ACA231CEC4A00E9A353 /* AVPlayerScrollPageViewController.swift */; };
 		E215C61C76DF4FD485900124 /* Pods_LivePlayer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABF08F633F6CC86424F9DB7 /* Pods_LivePlayer_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		70E49AC4231CE4DE00E9A353 /* RegularPlayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularPlayerExtension.swift; sourceTree = "<group>"; };
 		70E49AC6231CE5D600E9A353 /* CollectionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtension.swift; sourceTree = "<group>"; };
 		70E49AC8231CE60900E9A353 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		70E49ACA231CEC4A00E9A353 /* AVPlayerScrollPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerScrollPageViewController.swift; sourceTree = "<group>"; };
 		7ABF08F633F6CC86424F9DB7 /* Pods_LivePlayer_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LivePlayer_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5AFD8E245E4E4F3980A1DBB /* Pods-LivePlayer_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivePlayer_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivePlayer_Example/Pods-LivePlayer_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CB051895A11C7AB72593BC19 /* Pods-LivePlayer_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LivePlayer_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LivePlayer_Tests/Pods-LivePlayer_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				70E49ABA231CE0D300E9A353 /* InfinityPageViewController.swift */,
 				70E49ABC231CE0FE00E9A353 /* PlayerScrollViewController.swift */,
 				70E49AC0231CE41900E9A353 /* PlayerScrollPageViewController.swift */,
+				70E49ACA231CEC4A00E9A353 /* AVPlayerScrollPageViewController.swift */,
 			);
 			path = Scroll;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				70E49ABF231CE12C00E9A353 /* AVAudioSessionExtension.swift in Sources */,
 				70E49ABD231CE0FE00E9A353 /* PlayerScrollViewController.swift in Sources */,
 				70D22C212262F335009FFE9F /* DummyData.swift in Sources */,
+				70E49ACB231CEC4A00E9A353 /* AVPlayerScrollPageViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				70D22C2B226301BB009FFE9F /* BasePlayerViewController.swift in Sources */,
 			);

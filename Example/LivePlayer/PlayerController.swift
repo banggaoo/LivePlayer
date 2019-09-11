@@ -16,7 +16,6 @@ protocol PlayerControllerDelegate: class {
     func didFailedLoadBecause(_ state: PlayerController.FailedState)
     func didUpdateTimeControlStatus(_ playing: Bool)
     func playerDidUpdateTime(_ time: TimeInterval, _ duration: TimeInterval)
-//    func didUpdateLiveChannelInfo(_ info: LiveChannelModel)
 }
 
 final class PlayerController {
