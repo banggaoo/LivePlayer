@@ -30,9 +30,15 @@ class ViewController: UIViewController {
         presentPlayerVC(with: live, isBackgroundPlayEnabled: true)
     }
 
+    @IBAction func didTapMultipleVideoButton(_ sender: Any) {
+        guard let lives = LivesModel.decodeJsonData(jsonString: DummyData.multipleLiveData) else { return }
+        let vc = PlayerScrollViewController(lives: lives.lives)
+        present(vc, animated: true)
+    }
+    
     private func presentPlayerVC(with live: LiveModel, isBackgroundPlayEnabled: Bool = false) {
         let vc = PlayerViewController(with: live)
         vc.isBackgroundPlayEnabled = isBackgroundPlayEnabled
         present(vc, animated: true, completion: nil)
-    } 
+    }
 }

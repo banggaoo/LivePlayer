@@ -53,6 +53,14 @@
                                     <action selector="didTapSingleAudioWithBGButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="yLM-id-e0w"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PIg-ml-ebI">
+                                <rect key="frame" x="138" y="246" width="98" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Multiple Video"/>
+                                <connections>
+                                    <action selector="didTapMultipleVideoButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Mgk-0L-jja"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
